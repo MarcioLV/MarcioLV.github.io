@@ -7,7 +7,6 @@ ul{
   list-style: none;
 }
 
-.contenedor{
-  margin: auto;
-  width: 90%;
+button{
+  cursor: pointer;
 }

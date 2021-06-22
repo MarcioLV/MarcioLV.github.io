@@ -5,6 +5,12 @@ function addAuth(authUser){
   return myAuth.save()
 }
 
+async function getAuth(username){
+  const listName = await Model.find({username: username})
+  return listName[0]
+}
+
 module.exports = {
   add: addAuth,
+  query: getAuth,
 }

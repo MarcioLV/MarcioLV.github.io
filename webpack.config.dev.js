@@ -39,6 +39,12 @@ module.exports = {
       },
     ],
   },
+  devServer: {
+    contentBase: path.join(__dirname, "dist"),
+    compress: true,
+    historyApiFallback: true,
+    port: 8080,
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: "./public/index.html",
@@ -48,9 +54,4 @@ module.exports = {
       filename: "assets/[name].[contenthash].css",
     }),
   ],
-  devServer: {
-    contentBase: path.join(__dirname, "dist"),
-    compress: true,
-    port: 8080,
-  },
 };

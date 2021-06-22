@@ -1,5 +1,5 @@
 {
-  "name": "0.baseReact",
+  "name": "A1.RedSocial",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
     "build": "webpack --config webpack.config.prod.js",
     "dev": "webpack --config webpack.config.dev.js",
     "start": "webpack serve --config webpack.config.dev.js",
-    "start:dev": "nodemon src/server/index.js"
+    "start:dev": "nodemon src/server/api/server.js"
   },
   "keywords": [],
   "author": "Marcio Luis Lorenzotti <marcio.lorenzotti@gmail.com>",
@@ -36,7 +36,11 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.14",
     "nanoid": "^3.1.23",
     "react": "^17.0.2",

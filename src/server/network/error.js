@@ -1,9 +1,9 @@
 const response = require("./response")
 
 function errors(err, req, res, next){
-  console.error('[error]', err);
+  console.error('[Error]', err);
   const message = err.message || "Error Interno"
-  const status = err.statusCOde || 500
+  const status = err.statusCode || 500
 
   response.error(req, res, message, status)
 }
