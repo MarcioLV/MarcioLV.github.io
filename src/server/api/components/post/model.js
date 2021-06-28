@@ -6,8 +6,8 @@ const myPostSchema = new Schema({
   _id: String,
   user: String,
   text: String,
+  activity: Array,
   date: Date,
-  likeCom: {type: Schema.ObjectId, ref: "likeCom"}
 })
 
 const myLikeSchema = new Schema({

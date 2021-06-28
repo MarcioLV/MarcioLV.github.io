@@ -10,7 +10,8 @@ async function veryfyPostExist(post_id){
 }
 
 async function getPost(postId) {
-  const listPost = await Model.find(postId);
+  const listPost = await Model.find(postId)
+
   return listPost;
 }
 

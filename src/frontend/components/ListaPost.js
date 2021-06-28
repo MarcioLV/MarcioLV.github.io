@@ -4,6 +4,7 @@ import "./style/ListaPost.css";
 
 function ListaPost(prop) {
   const { post, ...method } = prop;
+  console.log(post);
 
   if (post.length === 0) {
     return <div>Loading</div>;
