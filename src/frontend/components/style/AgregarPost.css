@@ -1,0 +1,23 @@
+.addPost{
+  /* height: inherit; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.addPost input,
+.addPost button,
+.addPost h4{
+  margin:10px
+}
+
+.addPost input{
+  padding:5px
+}
+
+.addPost button{
+  color: #fff;
+  background-color: #3386f2;
+  padding: 10px
+}
+

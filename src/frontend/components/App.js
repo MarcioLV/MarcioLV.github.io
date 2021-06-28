@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 
 import Login from "../pages/login";
@@ -9,48 +9,82 @@ class App extends React.Component {
     super(props);
     this.state = {
       is_logged: false,
+      user: {
+        username: null,
+        token: null,
+      },
     };
     this.handleLogin = this.handleLogin.bind(this);
   }
-  handleLogin(is_logged) {
-    this.setState({ is_logged });
+
+  handleLogin(token, username) {
+    this.setState({ is_logged: true, user: { 
+      token: token, username: username } });
   }
 
-  // PrivateRoute({ children, ...rest }) {
-  //   console.log(children);
-  //   console.log(rest);
-  //   return (
-  //     <Route
-  //       {...rest}
-  //       render={({ location }) => {
-  //         console.log(this.state.is_logged);
-  //         this.state.is_logged ? children : <Redirect to="/login" />;
-  //       }}
-  //     />
-  //   );
-  // }
+  buscarPagina() {
+    return this.state.is_logged ? (
+      <Main user={this.state.user} />
+    ) : (
+      <Redirect from="/" to="/login" />
+    );
+  }
 
   render() {
     return (
       <BrowserRouter>
         <Switch>
-          <Route exact path="/" 
-            // component={Main}
-            render={()=>{
-              return(
-              this.state.is_logged ? <Main/> : <Redirect from="/" to="/login"/>
-            )}}
-          />
+          <Route exact path="/" render={() => this.buscarPagina()} />
           <Route
             exact
             path="/login"
-            // component={Login}
-            render={() => <Login onLogin={this.handleLogin} />}
+            render={() =>
+              this.state.is_logged ? (
+                <Redirect to="/" />
+              ) : (
+                <Login onLogin={this.handleLogin} />
+              )
+            }
           />
         </Switch>
       </BrowserRouter>
     );
   }
 }
+
+// function handleLogin() {
+//   provideAuth.signin()
+// }
+
+// function provideAuth() {
+//   const [user, setUser] = useState(false);
+
+//   const signin = () => {
+//     setUser(true)
+//     console.log(user);
+//   }
+
+//   return {
+//     user,
+//     signin
+//   }
+// }
+
+// function PrivateRoute({ children, ...rest }) {
+//   let auth = provideAuth.user;
+//   return (
+//     <Route
+//       {...rest}
+//       render={() =>
+//         auth ? (
+//           children
+//         ) : (
+//           <Redirect to="/login" />
+//           // <div>loginloginloginloginlogin</div>
+//         )
+//       }
+//     />
+//   );
+// }
 
 export default App;

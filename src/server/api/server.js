@@ -3,6 +3,7 @@ const express = require('express')
 const errors = require("../network/error")
 const user = require("./components/user/network")
 const auth = require("./components/auth/network")
+const post = require("./components/post/network")
 const cors = require('cors')
 // const bodyParser = require("body-parser")
 const app = express();
@@ -14,6 +15,7 @@ app.use(cors())
 
 app.use("/user", user)
 app.use("/auth", auth)
+app.use("/post", post)
 
 
 

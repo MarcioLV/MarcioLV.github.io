@@ -14,17 +14,26 @@ class Login extends React.Component {
     //   error: false,
     // };
   }
+  componentDidMount(){
+  // login automatico para desarrollo
+    const data = {
+      username: 'marcio',
+      password: 'marcio',
+    };
+    this.fetchLogin(data);
+  }
+
   handleSubmit(user, pass) {
     if(!user || !pass){
-      alert("Rellenar todos los campos")
-    }else{
-      const data = {
-        username: user,
-        password: pass,
-      };
-      this.fetchLogin(data);
+      return alert("Rellenar todos los campos")
     }
+    const data = {
+      username: user,
+      password: pass,
+    };
+    this.fetchLogin(data);
   }
+  
   fetchLogin = async (data) => {
     try {
       const request = await fetch(
@@ -43,14 +52,10 @@ class Login extends React.Component {
       if(response2.status === 400){
         alert("Datos Incorrenctos")
       }else{
-        console.log("redirect");
-        location.href = "http://localhost:8080/main"
-        // return (<Redirect to="/main" />)
+        this.props.onLogin(response2.body, data.username)
       }
-      // this.setState({ loading: true, error: false });
     } catch (err) {
       console.error("[ERROR]" + err);
-      // this.setState({ loading: false, error: true });
     }
   };
 

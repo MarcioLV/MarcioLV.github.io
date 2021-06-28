@@ -1,0 +1,19 @@
+body{
+  background-color: #18191a;
+  color: #fff
+}
+
+.wall-center{
+  margin: 0 auto;
+  width: 500px;
+}
+
+.agregar-post{
+  background-color: #242526;
+  margin: 20px 0
+}
+
+.ver-post{
+  display: flex;
+  flex-direction: column-reverse;
+}
