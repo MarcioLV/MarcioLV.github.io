@@ -6,7 +6,6 @@ const myPostSchema = new Schema({
   _id: String,
   user: String,
   text: String,
-  activity: Array,
   date: Date,
 })
 
@@ -22,18 +21,12 @@ const myCommentSchema = new Schema({
   date: Date
 })
 
-function setLikeModel(collection){
-  return mongoose.model(collection, myLikeSchema)
-}
-
-function setCommentModel(collection){
-  return mongoose.model(collection, myCommentSchema)
-}
-
-const Model = mongoose.model('post', myPostSchema)
+const Post = mongoose.model('post', myPostSchema)
+const Like = mongoose.model("like", myLikeSchema)
+const Comment = mongoose.model("comment", myCommentSchema)
 
 module.exports = {
-  Model,
-  setLikeModel,
-  setCommentModel
+  Post,
+  Like,
+  Comment
 }
