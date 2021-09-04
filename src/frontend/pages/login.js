@@ -1,10 +1,9 @@
 import React from "react";
-import { useLocation } from 'react-router-dom'
 
 import "./style/login.css";
 import LoginBox from "../components/LoginBox";
 
-import config from "../config"
+import config from "../config";
 
 class Login extends React.Component {
   constructor(props) {
@@ -14,18 +13,18 @@ class Login extends React.Component {
     //   error: false,
     // };
   }
-  componentDidMount(){
   // login automatico para desarrollo
-    const data = {
-      username: 'marcio',
-      password: 'marcio',
-    };
-    this.fetchLogin(data);
-  }
+  // componentDidMount(){
+  //   const data = {
+  //     username: 'marlord',
+  //     password: 'marlord',
+  //   };
+  //   this.fetchLogin(data);
+  // }
 
   handleSubmit(user, pass) {
-    if(!user || !pass){
-      return alert("Rellenar todos los campos")
+    if (!user || !pass) {
+      return alert("Rellenar todos los campos");
     }
     const data = {
       username: user,
@@ -33,7 +32,7 @@ class Login extends React.Component {
     };
     this.fetchLogin(data);
   }
-  
+
   fetchLogin = async (data) => {
     try {
       const request = await fetch(
@@ -48,11 +47,11 @@ class Login extends React.Component {
         }
       );
       const response = await request.text();
-      const response2 = await JSON.parse(response)
-      if(response2.status === 400){
-        alert("Datos Incorrenctos")
-      }else{
-        this.props.onLogin(response2.body, data.username)
+      const response2 = await JSON.parse(response);
+      if (response2.status === 400) {
+        alert("Datos Incorrenctos");
+      } else {
+        this.props.onLogin(response2.body);
       }
     } catch (err) {
       console.error("[ERROR]" + err);
@@ -69,15 +68,17 @@ class Login extends React.Component {
     //   return 'Error'
     // }
     return (
-      <div className="main">
-        <div className="conteiner">
-          <div className="page-name">
+      <div className="login">
+        <div className="login-conteiner">
+          <div className="login-page-name">
             <h1>RedSocial</h1>
             <h3>
               Comunicate y comparti con las personas que forman parte de tu vida
             </h3>
           </div>
-          <LoginBox handleSubmit={this.handleSubmit.bind(this)} />
+          <div className="login-page-input">
+            <LoginBox handleSubmit={this.handleSubmit.bind(this)} />
+          </div>
         </div>
       </div>
     );

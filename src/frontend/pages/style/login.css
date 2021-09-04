@@ -3,15 +3,16 @@
   padding: 0;
 }
 
-body{
+
+.login{
   background-color: #f0f2f5;
-}
-.main{
   height: 100vh;
+  overflow-y: scroll;
 }
 
-.conteiner{
-  width:1000px;
+.login-conteiner{
+  max-width: 1000px;
+  width:90%;
   height: inherit;
   margin: 0 auto;
   display: flex;
@@ -19,35 +20,35 @@ body{
   align-items: center;
 }
 
-.page-name{
+.login-page-name{
   width:450px
 }
 
-.page-name h1{
+.login-page-name h1{
   color: #3386f2;
   font-size: 4.5em;
 }
 
-.page-name h3{
+.login-page-name h3{
   font-size: 1.8em;
   font-weight: lighter;
   line-height: 90%;
 }
 
 
-@media (max-width: 700px) {
-  .main{
+@media (max-width: 857px) {
+  .login{
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  .conteiner{
+  .login-conteiner{
     /* height: 80%; */
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
   }
-  .page-name{
+  .login-page-name{
     text-align: center;
     width: 400px;
   }

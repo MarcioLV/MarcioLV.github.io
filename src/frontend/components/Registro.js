@@ -26,7 +26,6 @@ function Registro(props) {
           body: JSON.stringify(user),
         }
       )
-      // const response = await request.text()
       alert("Usuario creado")
       props.onClose()
     }catch(err){

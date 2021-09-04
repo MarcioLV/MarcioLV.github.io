@@ -1,0 +1,72 @@
+*{
+  padding: 0;
+  margin: 0;
+}
+
+.perfil{
+  height: 100vh;
+  overflow-y: scroll;
+  background: linear-gradient(#3386f2, 30%, #18191a);
+  background-size: cover;
+  background-attachment: fixed;
+  color: #fff;
+}
+
+.perfil-view{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding:10px;
+  height: inherit;
+}
+
+.perfil-user-contenedor{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+}
+
+.perfil-contenedor{
+  width: 500px;
+}
+
+.perfil-user{
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.perfil-user-imagen{
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: aliceblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.perfil-user h1{
+  font-size: 2.5em;
+  margin: 20px 0;
+}
+
+.perfil-user button{
+  background-color: inherit;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 18px;
+}
+
+.perfil-user button:hover{
+  background-color: #3386f2;
+}
+
+.perfil-post{
+  display: flex;
+  flex-direction: column;
+}

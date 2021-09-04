@@ -12,6 +12,12 @@ function verify(token){
 }
 
 const check = {
+  own: function(req, owner){
+    const decoded = decodedHeader(req)
+    if(decoded.username !== owner){
+      throw error("No puedes hacer esto[auth]", 401)
+    }
+  },
   logged: function(req){
     const decoded = decodedHeader(req)
   }

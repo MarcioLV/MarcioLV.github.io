@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 
+import config from "../config";
+
+import NotFound from "./NotFound";
 import Login from "../pages/login";
 import Main from "../pages/Main";
+import Perfil from "../pages/Perfil";
 
 class App extends React.Component {
   constructor(props) {
@@ -16,25 +20,77 @@ class App extends React.Component {
     };
     this.handleLogin = this.handleLogin.bind(this);
   }
-
-  handleLogin(token, username) {
-    this.setState({ is_logged: true, user: { 
-      token: token, username: username } });
+  componentDidMount() {
+    const token = sessionStorage.getItem("token");
+    const userId = sessionStorage.getItem("userId");
+    if (token) {
+      const user = {
+        _id: userId,
+        token: token
+      }
+      this.handleLogin(user);
+    }
   }
 
-  buscarPagina() {
+  handleLogin = async (user) => {
+    let userAvatar;
+    let username
+    try {
+      const request = await fetch(
+        `${config.api.url}:${config.api.port}/user/${user._id}`
+      );
+      const response = await request.text();
+      const response2 = await JSON.parse(response);
+      userAvatar = response2.body.avatar;
+      username = response2.body.username;
+    } catch (err) {
+      console.error("[ERROR]" + err);
+    }
+    sessionStorage.setItem("token", user.token);
+    sessionStorage.setItem("userId", user._id);
+    this.setState({
+      is_logged: true,
+      user: {
+        token: user.token,
+        username: username,
+        avatar: userAvatar,
+        _id: user._id,
+      },
+    });
+  };
+
+  handleLogout() {
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("userId");
+    this.setState({
+      is_logged: false
+    });
+  }
+
+  main() {
     return this.state.is_logged ? (
-      <Main user={this.state.user} />
+      <Main user={this.state.user} handleLogout={()=>this.handleLogout()} />
     ) : (
-      <Redirect from="/" to="/login" />
+      <Redirect to="/login" />
     );
+  }
+
+  perfil(e) {
+    return this.state.is_logged ? (
+      <Perfil user={this.state.user} data={e} handleLogout={()=>this.handleLogout()}/>
+    ) : (
+      <Redirect to="/login" />
+    );
+  }
+  notFound() {
+    return this.state.is_logged ? <NotFound /> : <Redirect to="/login" />;
   }
 
   render() {
     return (
       <BrowserRouter>
         <Switch>
-          <Route exact path="/" render={() => this.buscarPagina()} />
+          <Route exact path="/" render={() => this.main()} />
           <Route
             exact
             path="/login"
@@ -46,45 +102,12 @@ class App extends React.Component {
               )
             }
           />
+          <Route exact path="/error" render={() => this.notFound()} />
+          <Route exact path="/:userId" render={(e) => this.perfil(e)} />
         </Switch>
       </BrowserRouter>
     );
   }
 }
-
-// function handleLogin() {
-//   provideAuth.signin()
-// }
-
-// function provideAuth() {
-//   const [user, setUser] = useState(false);
-
-//   const signin = () => {
-//     setUser(true)
-//     console.log(user);
-//   }
-
-//   return {
-//     user,
-//     signin
-//   }
-// }
-
-// function PrivateRoute({ children, ...rest }) {
-//   let auth = provideAuth.user;
-//   return (
-//     <Route
-//       {...rest}
-//       render={() =>
-//         auth ? (
-//           children
-//         ) : (
-//           <Redirect to="/login" />
-//           // <div>loginloginloginloginlogin</div>
-//         )
-//       }
-//     />
-//   );
-// }
 
 export default App;

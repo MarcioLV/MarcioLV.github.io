@@ -4,10 +4,11 @@ const {Schema} = mongoose
 
 const myUserSchema = new Schema({
   _id: String,
-  name: String,
-  username: String
+  username: String,
+  avatar: String,
+  posts: [{type: Schema.ObjectId, ref: "post"}],
 })
 
-const model = mongoose.model("user", myUserSchema)
+const User = mongoose.model("user", myUserSchema)
 
-module.exports = model
+module.exports = User

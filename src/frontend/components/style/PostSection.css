@@ -1,0 +1,9 @@
+.agregar-post{
+  background-color: #242526;
+  margin: 20px 0
+}
+
+.ver-post{
+  display: flex;
+  flex-direction: column-reverse;
+}

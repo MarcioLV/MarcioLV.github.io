@@ -5,34 +5,34 @@ button{
   
 }
 
-.login{
+.login-box{
   /* border: 1px solid blue; */
   width: 400px;
   background-color: #fff;
   border-radius: 10px;
 }
 
-.login-box{
+.login-box-conteiner{
   padding: 15px; 
   display: flex;
   flex-direction: column;
   /* align-items: center; */
 }
 
-.login-info{
+.login-box-info{
   display: flex;
   flex-direction: column;
   padding-bottom: 15px;
   border-bottom: 1px solid gray;
 }
 
-.login-info input,
-.login-info button{
+.login-box-info input,
+.login-box-info button{
   height: 45px;
   margin-bottom: 15px;
 }
 
-.login-info input{
+.login-box-info input{
   border-radius: 5px;
   border: 1px solid grey;
   padding-left: 15px;
@@ -41,12 +41,12 @@ button{
   outline: none
 }
 
-.login-info input:focus{
+.login-box-info input:focus{
   border: 1px solid lightskyblue;
   opacity: 0.7;
 }
 
-.login-info button{
+.login-box-info button{
   font-size: 1.3em;
   font-weight: bold;
   color: #fff;

@@ -1,53 +1,35 @@
-import React, { useState } from "react";
-import ListaPost from "../components/ListaPost";
-import AgregarPost from "../components/AgregarPost";
+import React from "react";
 import config from "../config";
 
+
 import "./style/Main.css";
+
+import PostSection from '../components/PostSection'
+import Loading from '../components/Loading'
+import Header from '../components/Header'
 
 class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
+      error: false,
       post: [],
       user: {
         username: props.user.username,
+        avatar: props.user.avatar,
+        _id: props.user._id,
         token: "Bearer " + props.user.token,
       },
     };
-    this.handleAddPost = this.handleAddPost.bind(this);
-    this.handleAddLike = this.handleAddLike.bind(this);
-    this.handleAddComment = this.handleAddComment.bind(this);
   }
-
+  
   componentDidMount() {
     this.fetchPost();
   }
 
-  handleAddPost(text) {
-    const post = {
-      user: this.state.user.username,
-      text: text,
-    };
-    this.fetchAddData(post);
-  }
-
-  handleAddLike(postId) {
-    const likeUser = {
-      user: this.state.user.username,
-    };
-    this.fetchAddData(likeUser, postId, "like");
-  }
-
-  handleAddComment(postId, comment){
-    const commentPost = {
-      user: this.state.user.username,
-      comment: comment
-    }
-    this.fetchAddData(commentPost, postId, "comment")
-  }
-
   fetchPost() {
+    this.setState({loading: true, error: false})
     const options = {
       headers: {
         Authorization: this.state.user.token,
@@ -57,41 +39,17 @@ class Main extends React.Component {
       .then((response) => response.text())
       .then((response) => JSON.parse(response))
       .then((response) => Array.from(response.body))
-      .then((response) => this.setState({ post: response }))
+      .then((response) => this.setState({ post: response, loading: false, error: false }))
       .catch((err) => console.error("[error]", err.message));
   }
 
-  fetchAddData(data, id = "", modo = "") {
-    if (modo) {
-      id += "/";
-    }
-    fetch(`${config.api.url}:${config.api.port}/post/${id}${modo}`, {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: this.state.user.token,
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => console.log(response))
-      .catch((err) => console.error("[ERROR]", err));
-  }
-
   render() {
+    if(this.state.loading){return <Loading />}
     return (
       <div className="wall">
+        <Header handleLogout={this.props.handleLogout}/>
         <div className="wall-center">
-          <section className="agregar-post">
-            <AgregarPost handleAddPost={this.handleAddPost} />
-          </section>
-          <section className="ver-post">
-            <ListaPost
-              post={this.state.post}
-              handleAddLike={this.handleAddLike}
-              handleAddComment={this.handleAddComment}
-            />
-          </section>
+          <PostSection user={this.state.user} post={this.state.post}/>
         </div>
       </div>
     );

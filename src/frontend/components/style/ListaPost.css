@@ -1,17 +1,67 @@
+.noHayPost{
+  display: flex;
+  justify-content: center;
+
+  font-size: 35px;
+}
+
 .post {
   background-color: #242526;
   margin-bottom: 10px;
 }
 
-.contenedor {
-  width: 90%;
+.post-contenedor {
   margin: 0 auto;
-  padding: 10px 0 5px 0;
+  padding: 10px;
+  padding-bottom: 0;
 }
 
-.post-user,
+.post-user{
+  display: flex;
+  justify-content: space-between;
+}
+
+.post-user-info-username{
+  display: flex;
+  align-items: center;
+}
+
+.post-user-info-username-figure,
+.post-user-info-username-figure-img{
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+}
+
+.post-user-info-username-figure{
+  background-color:antiquewhite;
+  margin-right: 7px;
+}
+
+.post-user-button{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.post-user-button button{
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: inherit;
+  color: #fff;
+  font-size: 25px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.post-user-delete{
+  position: relative;
+  margin-top: 7px;
+  cursor: pointer;
+}
+
 .post-text {
-  padding: 10px 0;
+  padding: 15px 0;
 }
 
 .post-like {
@@ -23,7 +73,7 @@
 }
 
 .post-like button {
-  color: inherit;
+  color: #fff;
   background-color: inherit;
   width: 100%;
   padding: 5px 0;
@@ -36,14 +86,16 @@
 
 .post-comment_section-input,
 .post-comment_section-input input,
-.post-comment_section-input button {
+.post-comment_section-input button,
+.post-comment_section-comment button {
   background-color: #3a3b3c;
   border: none;
   height: 36px;
   border-radius: 18px;
 }
 
-.post-comment_section-input {
+.post-comment_section-input,
+.post-comment_section-comment {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
@@ -56,13 +108,20 @@
   color: #fff;
 }
 
-.post-comment_section-input button {
+.post-comment_section-input button
+/* .post-comment_section-comment button */
+{
   width: 100px;
   color: aliceblue;
 }
 
-.post-comment_section-input button:hover {
+.post-comment_section-input button:hover{
   background-color: #3386f2;
+}
+
+.post-comment_section-list{
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 .post-comment_section-comment {
@@ -70,4 +129,28 @@
   border-radius: 15px;
   padding: 12px;
   margin-bottom: 7px;
+}
+
+.post-comment_section-comment button{
+  width: 50px;
+}
+.post-comment_section-comment button:hover{
+  background-color: lightcoral;
+  color: black
+}
+
+.post-comment_section-comment img{
+  width: 20px;
+}
+
+.post-comment_section-button{
+  width: 100%;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: center;
+}
+.post-comment_section button{
+  background-color: inherit;
+  color: inherit;
+  border: none;
 }

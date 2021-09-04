@@ -5,26 +5,20 @@ const auth = require("./secure");
 
 const router = express.Router();
 
-router.get("/", auth("log"), list);
-router.get("/:id", auth("log"), list);
-router.post("/", auth("add"), upsert);
-router.get("/:id/activity", auth("log"), get);
-router.post("/:id/like", auth("log"), like);
-router.post("/:id/comment", auth("log"), comment);
+router.get("/", /*auth("log"),*/ list);
+router.get("/:id", /*auth("log"),*/ list);
+router.post("/", /*auth("add"),*/ upsert);
+router.delete("/:id", /*auth("own_post"),*/ del)
+router.post("/:id/like", /*auth("add"),*/ like);
+router.delete("/:id/like", /*auth("log"),*/ dislike)
+router.post("/:id/comment", /*auth("add"),*/ comment);
+router.delete("/:id/comment", /*auth("own_comment"),*/ delComment)
 
 function list(req, res, next) {
   controller
     .list(req.params.id)
     .then((lista) => {
       response.success(req, res, lista, 200);
-    })
-    .catch(next);
-}
-function get(req, res, next) {
-  controller
-    .get(req.params.id)
-    .then((activity) => {
-      response.success(req, res, activity, 200);
     })
     .catch(next);
 }
@@ -38,6 +32,15 @@ function upsert(req, res, next) {
     .catch(next);
 }
 
+function del(req, res, next){
+  controller
+    .deletePost(req.params.id)
+    .then((post)=>{
+      response.success(req, res, post, 201)
+    })
+    .catch(next)
+}
+
 function like(req, res, next) {
   controller
     .addLike(req.params.id, req.body.user)
@@ -47,13 +50,30 @@ function like(req, res, next) {
     .catch(next);
 }
 
+function dislike(req, res, next){
+  controller
+    .removeLike(req.params.id, req.body.user)
+    .then((post)=>{
+      response.success(req, res, post, 200)
+    })
+    .catch(next)
+}
+
 function comment(req, res, next) {
   controller
     .addComment(req.params.id, req.body)
-    .then((post) => {
-      response.success(req, res, post, 201);
+    .then((comment) => {
+      response.success(req, res, comment, 201);
     })
     .catch(next);
 }
 
+function delComment(req, res, next){
+  controller
+    .removeComment(req.body.id)
+    .then((comment) => {
+      response.success(req, res, comment, 201);
+    })
+    .catch(next);
+}
 module.exports = router;

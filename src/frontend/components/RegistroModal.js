@@ -7,19 +7,20 @@ function RegistroModal(props) {
     props.closeModal();
   };
 
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
+  const [data, setData] = useState({
+    username: '',
+    password: '',
+    password2: ''
+  })
 
   const handleSubmit = ()=>{
-    if(!name || !username || !password || !password2){
+    if(!data.username || !data.password || !data.password2){
       return alert("Rellenar todos lo campos")
     }
-    if(password !== password2){
+    if(data.password !== data.password2){
       return alert("Contraseñas no coinciden")
     }
-    props.handleSubmit({name: name, username: username, password:password})
+    props.handleSubmit(data)
   }
 
   return (
@@ -35,10 +36,9 @@ function RegistroModal(props) {
           </button>
         </div>
         <div className="registerModal-inputs">
-          <input type="text" placeholder="Nombre" onChange={(e) => setName(e.target.value)} />
-          <input type="text" placeholder="Nombre Usuario" onChange={(e) => setUsername(e.target.value)}/>
-          <input type="password" placeholder="Contraseña" onChange={(e) => setPassword(e.target.value)}/>
-          <input type="password" placeholder="Repetir Contraseña" onChange={(e) => setPassword2(e.target.value)}/>
+          <input type="text" placeholder="Nombre Usuario" onChange={(e) => setData({...data, username: e.target.value})}/>
+          <input type="password" placeholder="Contraseña" onChange={(e) => setData({...data, password: e.target.value})}/>
+          <input type="password" placeholder="Repetir Contraseña" onChange={(e) => setData({...data, password2: e.target.value})}/>
         </div>
         <div className="registerModal-button">
           <button onClick={handleSubmit}>Registrarte</button>

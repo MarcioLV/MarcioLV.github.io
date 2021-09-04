@@ -2,28 +2,30 @@ const mongoose = require("mongoose")
 
 const {Schema} = mongoose
 
-const myPostSchema = new Schema({
-  _id: String,
-  user: String,
+const postSchema = new Schema({
+  user: { type: String, ref: 'User'},
   text: String,
+  likes: [{ type: Schema.ObjectId, ref: 'Like' }],
+  comments: [{ type: Schema.ObjectId, ref: 'Comment' }],
   date: Date,
 })
 
-const myLikeSchema = new Schema({
+const likeSchema = new Schema({
+  post: Object,
   user: String,
-  like: String,
   date: Date
 })
 
-const myCommentSchema = new Schema({
+const commentSchema = new Schema({
+  post: Object,
   user: String,
-  comment: String,
+  text: String,
   date: Date
 })
 
-const Post = mongoose.model('post', myPostSchema)
-const Like = mongoose.model("like", myLikeSchema)
-const Comment = mongoose.model("comment", myCommentSchema)
+const Post = mongoose.model('Post', postSchema)
+const Like = mongoose.model("Like", likeSchema)
+const Comment = mongoose.model("Comment", commentSchema)
 
 module.exports = {
   Post,

@@ -3,7 +3,7 @@ button{
   border-radius: 5px;
 }
 
-.registerModal{
+.editModal{
   position: fixed;
   top: 0;
   left: 0;
@@ -17,7 +17,7 @@ button{
 
   font-family: Helvetica, Arial, sans-serif;
 }
-.registerModal-conteiner{
+.editModal-conteiner{
   width: 350px;
   background-color: #fff;
   border-radius: 10px;
@@ -26,7 +26,7 @@ button{
   flex-direction: column;
   /* align-items: center; */
 }
-.registerModal-header{
+.editModal-header{
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -43,20 +43,21 @@ button{
   left: 5px; 
 }
 
-.registerModal-inputs{
+.editModal-inputs,
+.editModal-inputs_contraseña{
   display: flex;
   flex-direction: column;
   padding: 15px 0;
-
 }
 
-.registerModal-inputs input,
-.registerModal-inputs button{
-  height: 45px;
+.editModal-inputs input,
+.editModal-inputs button{
+  /* height: 45px; */
   margin-bottom: 15px;
+  padding: 10px;
 }
 
-.registerModal-inputs input{
+.editModal-inputs input{
   border-radius: 5px;
   border: 1px solid grey;
   padding-left: 15px;
@@ -65,31 +66,42 @@ button{
   background-color: #f5f6f7;
 }
 
-.registerModal-inputs input:focus{
+.editModal-inputs input:focus{
   border: 1px solid lightskyblue;
   opacity: 0.65; 
 }
 
-.registerModal-inputs button{
-  font-size: 1.3em;
-  font-weight: bold;
-  color: #fff;
-  background-color:#3386f2
+.editModal-inputs_activarCont{
+  display: flex;
+  align-items: center;
+}
+.editModal-inputs_activarCont input{
+  border-radius: 50%;
+  margin: auto 5px;
 }
 
-.registerModal-button{
-  margin: 0 auto;
+.editModal-button{
+  /* margin: 0 auto; */
   margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
 }
 
-.registerModal-button button{
-  width: 200px;
+.editModal-button button{
+  width: 100px;
   height: 35px;
   font-size: 1.2em;
   font-family: 'Times New Roman', Times, serif;
   font-weight: bold;
   letter-spacing: 1px;
   color: #fff;
-  background-color: rgb(44, 160, 44);
 }
 
+.editModal-button_cancelar{
+  background-color: rgb(226, 56, 56);
+}
+
+.editModal-button_aceptar{
+  background-color: rgb(44, 160, 44);
+
+}

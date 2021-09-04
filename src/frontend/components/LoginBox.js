@@ -22,9 +22,9 @@ function LoginBox(props) {
     props.handleSubmit(username, password)
   };
   return (
-    <div className="login">
-      <div className="login-box">
-        <div className="login-info">
+    <div className="login-box">
+      <div className="login-box-conteiner">
+        <div className="login-box-info">
           <input
             type="text"
             placeholder="Username"

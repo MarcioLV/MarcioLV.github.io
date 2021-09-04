@@ -1,5 +1,5 @@
 const auth = require('../../../auth')
-
+const controller = require('./controller')
 module.exports = function checkAuth(action){
   function middleware(req, res, next){
     switch(action){
@@ -7,6 +7,19 @@ module.exports = function checkAuth(action){
       case "add":
         auth.check.logged(req)
         next()
+        break
+      case "own_post":
+        controller.list(req.params.id)
+          .then((post)=>{
+            auth.check.own(req, post.user)
+          })
+      case "own_comment":
+        controller.getComment(req.body.id)
+          .then((comment) => {
+            auth.check.own(req, comment.user)
+            next()
+          })
+          .catch(next)
         break
       default:
         next()

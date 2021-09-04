@@ -12,47 +12,73 @@ async function list(post_id) {
   return list;
 }
 
-function get(post_id) {
-  return store.getActivity(post_id);
-}
-
 async function addPost(body) {
   if (!body.user) {
     throw error("No viene user", 401);
   }
   const post = {
-    _id: nanoid(),
     user: body.user,
     text: body.text,
-    activity: [],
+    like: [],
+    comment: [],
     date: new Date(),
   };
 
   return store.add(post);
 }
 
+async function deletePost(postId){
+  return store.removePost(postId)
+}
+
+async function getComment(comment_id){
+  const commentId = {
+    _id: comment_id
+  }
+  const comment = await store.getComment(commentId)
+  return comment
+}
+
 async function addLike(post, user) {
   const like = {
+    post: post,
     user: user,
-    like: "like",
     date: new Date(),
   };
-  return store.addLike(post, like);
+  return store.addLike(like);
+}
+async function removeLike(post, user){
+  const like = {
+    post: post,
+    user: user
+  }
+  return store.removeLike(like)
 }
 
 async function addComment(post, data) {
   const comment = {
+    post: post,
     user: data.user,
-    comment: data.comment,
+    text: data.comment,
     date: new Date(),
   };
-  return store.addComment(post, comment);
+  return store.addComment(comment);
+}
+
+async function removeComment(commentId){
+  const comment = {
+    _id: commentId
+  }
+  return store.removeComment(comment)
 }
 
 module.exports = {
   list,
-  get,
   addPost,
+  deletePost,
   addLike,
+  removeLike,
+  getComment,
   addComment,
+  removeComment,
 };
