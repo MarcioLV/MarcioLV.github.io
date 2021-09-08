@@ -1,6 +1,8 @@
 import React from "react";
 import config from "../config";
 
+import {Redirect} from "react-router-dom";
+
 
 import "./style/Main.css";
 
@@ -25,6 +27,7 @@ class Main extends React.Component {
   }
   
   componentDidMount() {
+    console.log("main");
     this.fetchPost();
   }
 

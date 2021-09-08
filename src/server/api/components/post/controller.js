@@ -1,6 +1,7 @@
 const { nanoid } = require("nanoid");
 const store = require("./store");
 const error = require("../../../utils/error");
+const config = require("../../../config")
 
 async function list(post_id) {
   const postId = {};
@@ -12,10 +13,11 @@ async function list(post_id) {
   return list;
 }
 
-async function addPost(body) {
+async function addPost(body, picture) {
   if (!body.user) {
     throw error("No viene user", 401);
   }
+
   const post = {
     user: body.user,
     text: body.text,
@@ -23,6 +25,10 @@ async function addPost(body) {
     comment: [],
     date: new Date(),
   };
+  
+  if(picture){
+    post.picture = `${config.api.url}:${config.api.port}/pictures/${picture.filename}`;
+  }
 
   return store.add(post);
 }

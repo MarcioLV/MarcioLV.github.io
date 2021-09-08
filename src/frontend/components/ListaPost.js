@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import trash from "../utils/icons/trash.png";
@@ -24,7 +24,7 @@ function ListaPost(prop) {
             <Post
               post={element}
               username={username}
-              avatar= {avatar}
+              avatar={avatar}
               handleDelPost={handleDelPost}
               method={method}
             />
@@ -58,6 +58,7 @@ function Post(prop) {
     }
   }
   const [like, setLike] = useState(likeColor);
+  const [cantLike, setCantLike] = useState(post.likes.length);
   //-----------------
 
   //arregler fecha post
@@ -81,10 +82,12 @@ function Post(prop) {
       if (like === "red") {
         await method.handleDeleteLike(e.target.id);
         waitLike = false;
+        setCantLike(cantLike - 1);
         return setLike("");
       }
       await method.handleAddLike(e.target.id);
       setLike("red");
+      setCantLike(cantLike + 1);
       waitLike = false;
     }
   };
@@ -114,9 +117,46 @@ function Post(prop) {
     }
     return setCommentStyle({ display: "none" });
   };
-  let userImg = post.user.avatar ? (post.user.avatar) : avatar ? (avatar) : (user)
-  let usuario = post.user.username ? (post.user.username) : (post.user)
-  let userId = post.user._id
+
+  //imagen del post
+  let picture = "";
+  let imgStyle = { display: "none" };
+  const maxWidth = 450;
+  if (post.picture) {
+    picture = post.picture;
+    imgStyle.display = "flex";
+  }
+  //-----------
+  let userImg = post.user.avatar ? post.user.avatar : avatar ? avatar : user;
+  let usuario = post.user.username ? post.user.username : post.user;
+  let userId = post.user._id;
+
+  //imagen de perfil
+  let i = useRef(null);
+  const check = () => {
+    if (userImg == user) {
+      i.current.style.width = "35px";
+    } else {
+      let height = i.current.clientHeight;
+      let width = i.current.clientWidth;
+      const MAX_WIDTH = 50;
+      const MAX_HEIGHT = 50;
+      if (width > height) {
+        if (width > MAX_WIDTH) {
+          height *= MAX_WIDTH / width;
+          width = MAX_WIDTH;
+        }
+      } else {
+        if (height > MAX_HEIGHT) {
+          width *= MAX_HEIGHT / height;
+          height = MAX_HEIGHT;
+        }
+      }
+      i.current.style.height = height + "px";
+      i.current.style.width = width + "px";
+    }
+  };
+
   return (
     <>
       <div className="post-contenedor">
@@ -125,6 +165,8 @@ function Post(prop) {
             <figure className="post-user-info-username-figure">
               <img
                 src={userImg}
+                ref={i}
+                onLoad={check}
                 alt="user"
                 className="post-user-info-username-figure-img"
               />
@@ -157,6 +199,9 @@ function Post(prop) {
           </div>
         </div>
         <div className="post-text">{post.text}</div>
+        <figure className="post-picture" style={imgStyle}>
+          <img src={picture} style={imgStyle} />
+        </figure>
         <div className="post-like">
           <button
             id={post._id}
@@ -164,8 +209,11 @@ function Post(prop) {
             style={{ color: like }}
           >
             Me Gusta
+            <small style={{ color: "white" }}> | {cantLike} | </small>
           </button>
-          <button onClick={handleCommentStyle}>Comentar</button>
+          <button onClick={handleCommentStyle}>
+            Comentar <small>| {post.comments.length} |</small>
+          </button>
         </div>
         <section className="post-comment_section" style={commentStyle}>
           <form action="">
@@ -199,9 +247,21 @@ function Post(prop) {
 function CommentList(prop) {
   const { comments, username, handleDeleteComment } = prop;
   const [limit, setLimit] = useState(2);
+  const [masComment, setMasComment] = useState(
+    "visible" /*(2>=comments.length ? ("none") : ("block"))*/
+  );
+
+  useEffect(() => {
+    if (limit >= comments.length) {
+      setMasComment("hidden");
+    } else {
+      setMasComment("visible");
+    }
+  });
 
   const handleShowComment = () => {
-    if (limit + 4 > comments.length) {
+    if (limit + 4 >= comments.length) {
+      setMasComment("hidden");
       return setLimit(comments.length);
     }
     setLimit(limit + 4);
@@ -230,7 +290,7 @@ function CommentList(prop) {
               key={index}
             >
               <div className="post-comment_section-comment-text">
-                <h5>{comentario.user}</h5>
+                <h4>{comentario.user}</h4>
                 <p>{comentario.text}</p>
               </div>
               <button
@@ -246,7 +306,9 @@ function CommentList(prop) {
         })}
       </div>
       <div className="post-comment_section-button">
-        <button onClick={handleShowComment}>Ver mas comentarios</button>
+        <button onClick={handleShowComment} style={{ visibility: masComment }}>
+          Ver mas comentarios
+        </button>
       </div>
     </>
   );

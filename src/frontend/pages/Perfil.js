@@ -4,10 +4,12 @@ import Loading from "../components/Loading";
 import Header from "../components/Header";
 import PostSection from "../components/PostSection";
 import EditModal from "../components/EditModal";
+import FotoModal from "../components/FotoModal";
 
 import config from "../config";
 
 import userImg from "../utils/icons/user.png";
+import changeImg from "../utils/icons/camara.png";
 import "./style/Perfil.css";
 
 class Perfil extends React.Component {
@@ -28,8 +30,10 @@ class Perfil extends React.Component {
         token: "Bearer " + this.props.user.token,
       },
       isOpened: false,
+      isOpenedImg: false,
     };
     this.openModal = this.openModal.bind(this)
+    this.openModalImg = this.openModalImg.bind(this)
   }
     
 
@@ -45,8 +49,12 @@ class Perfil extends React.Component {
     this.setState({ isOpened: true });
   }
 
+  openModalImg() {
+    this.setState({ isOpenedImg: true });
+  }
+
   closeModal() {
-    this.setState({ isOpened: false });
+    this.setState({ isOpened: false, isOpenedImg: false });
     this.fetchPost()
   }
 
@@ -92,8 +100,16 @@ class Perfil extends React.Component {
           <section className="perfil-user-contenedor">
             <div className="perfil-user perfil-contenedor">
               <div className="perfil-user-imagen">
-                <img src={userImg2} alt="user-imagen" />
+                <div className="perfil-user-imagen-avatar">
+                  <img src={userImg2} alt="user-imagen" />
+                </div>
+                <div className="perfil-user-imagen-change">
+                  <div className="perfil-user-imagen-change_contenedor" onClick={this.openModalImg}>
+                    <img src={changeImg} alt="" />
+                  </div>
+                </div>
               </div>
+              <FotoModal onClose={()=>this.closeModal()} isOpened={this.state.isOpenedImg} userId={this.state.user._id} userAvatar={userImg2}/>
               <h1>{this.state.userPage}</h1>
               <button style={style} onClick={this.openModal}>Editar Perfil</button>
               <EditModal onClose={()=>this.closeModal()} isOpened={this.state.isOpened} user={this.state.user}/>

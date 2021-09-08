@@ -2,7 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 
 import App from "./components/App"
-//import EditModal from "./components/EditModal"
+import FotoModal from "./components/FotoModal"
 
 import './style.css'
 

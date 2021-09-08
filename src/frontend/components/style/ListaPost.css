@@ -14,6 +14,7 @@
   margin: 0 auto;
   padding: 10px;
   padding-bottom: 0;
+  width: inherit;
 }
 
 .post-user{
@@ -26,11 +27,14 @@
   align-items: center;
 }
 
-.post-user-info-username-figure,
-.post-user-info-username-figure-img{
+.post-user-info-username-figure{
   height: 45px;
   width: 45px;
   border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .post-user-info-username-figure{
@@ -61,7 +65,18 @@
 }
 
 .post-text {
+  width: 100%;
+  word-wrap: break-word;
   padding: 15px 0;
+}
+
+.post-picture{
+  display:flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.post-picture img{
+  max-width: 100%;
 }
 
 .post-like {
@@ -153,4 +168,13 @@
   background-color: inherit;
   color: inherit;
   border: none;
+}
+
+.post-comment_section-comment-text{
+  width: 85%;
+  word-wrap: break-word;
+}
+
+.post-comment_section-comment-text p{
+  margin-top: 5px;
 }

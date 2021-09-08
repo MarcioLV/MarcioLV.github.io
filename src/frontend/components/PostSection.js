@@ -43,12 +43,14 @@ class PostSection extends React.Component {
     this.setState({ loading: false, myPage: page, userPage: userPage });
   }
 
-  async handleAddPost(text) {
-    const post = {
-      user: this.state.user._id,
-      text: text,
-    };
-    const newPost = await this.fetchAddData(post);
+  async handleAddPost(text, picture) {
+    let formdata = new FormData()
+    formdata.append("picture", picture)
+    formdata.append("user", this.state.user._id)
+    formdata.append("text", text)
+
+    const newPost = await this.fetchAddPost(formdata);
+    console.log(newPost)
     newPost.user = {
       username: this.state.user.username,
       avatar: this.state.user.avatar,
@@ -119,6 +121,24 @@ class PostSection extends React.Component {
       post.splice(index, 1)
       this.setState({post: post})
     }
+  }
+  async fetchAddPost(data) {
+    let datos = {};
+    await fetch(`${config.api.url}:${config.api.port}/post`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        // "Content-Type": "application/json",
+        Authorization: this.state.user.token,
+      },
+      body: data,
+    })
+      .then((response) => response.text())
+      .then((response) => JSON.parse(response))
+      .then((response) => (datos = response.body))
+      .catch((err) => console.error("[ERROR]", err));
+
+    return datos;
   }
   
   async fetchAddData(data, id = "", modo = "") {

@@ -39,15 +39,42 @@
   align-items: center;
 }
 
-.perfil-user-imagen{
+.perfil-user-imagen,
+.perfil-user-imagen-avatar{
   width: 200px;
   height: 200px;
-  border-radius: 50%;
-  background-color: aliceblue;
+
+}
+.perfil-user-imagen-avatar{
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.perfil-user-imagen-avatar{
+  border-radius: 50%;
+  background-color: rgb(101, 129, 153);
   overflow: hidden;
+}
+
+.perfil-user-imagen-change{
+  position: relative;
+  bottom: 60px;
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+}
+.perfil-user-imagen-change_contenedor{
+  background-color:#3181e8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.perfil-user-imagen-change img{
+  width: 40px;
 }
 
 .perfil-user h1{

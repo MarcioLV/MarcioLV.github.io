@@ -18,7 +18,6 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage
 })
-// const upload = multer({dest: 'uploads/'})
 
 router.get("/", list)
 router.get("/:user", get)
@@ -58,7 +57,6 @@ function edit(req, res, next){
     .catch(next)
 }
 function addAvatar(req, res, next){
-  console.log(req)
   controller.addAvatar(req.params.user, req.file)
     .then((data)=>{
       response.success(req, res, data, 201)

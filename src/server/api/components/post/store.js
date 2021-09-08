@@ -1,5 +1,7 @@
 const error = require("../../../utils/error");
 
+const fs = require("fs").promises
+
 const { Post, Like, Comment } = require("./model");
 const User = require("../user/model")
 
@@ -14,7 +16,6 @@ async function getPost(postId) {
   listPost = await User.populate(listPost, {path: "user"})
   listPost = await Comment.populate(listPost, {path: "comments"})
   listPost = await Like.populate(listPost, {path: "likes"})
-  console.log(listPost)
   return listPost;
 }
 
@@ -31,14 +32,29 @@ async function removePost(postId){
   const myUser = await User.findOne({_id: myPost.user})
   const myLike = await Like.find({post: postId})
   const myComment = await Comment.find({post: postId})
+
   const postIndex = myUser.posts.indexOf(postId)
   myUser.posts.splice(postIndex, 1)
+
   await myLike.forEach(element => element.delete())
   await myComment.forEach(element=> element.delete())
   await myUser.save()
-  return myPost.delete()
 
+  if(myPost.picture && myPost.picture !== ''){
+    const oldFileUrl = myPost.picture.split("/")
+    const oldFileName = oldFileUrl[oldFileUrl.length - 1]
+    console.log(oldFileName)
+    fs.unlink("./src/server/public/pictures/" + oldFileName)
+      .then(() => {
+        console.log("File removed");
+      })
+      .catch((err) => {
+        console.error("error", err);
+      });
+  }
+  return myPost.delete()
 }
+
 async function addLike(like) {
   await veryfyPostExist(like.post)
   const myLike = await new Like(like);
