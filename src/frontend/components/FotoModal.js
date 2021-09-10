@@ -161,7 +161,7 @@ function FotoModal(props) {
               onChange={(e) => handleAddFoto(e)}
               defaultChecked
             />
-            <h4>Cargar foto de perfil</h4>
+            <h4>Cargar nueva foto de perfil</h4>
           </div>
           <input
             type="file"

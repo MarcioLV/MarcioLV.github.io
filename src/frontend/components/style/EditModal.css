@@ -68,7 +68,6 @@ button{
 
 .editModal-inputs input:focus{
   border: 1px solid lightskyblue;
-  opacity: 0.65; 
 }
 
 .editModal-inputs_activarCont{

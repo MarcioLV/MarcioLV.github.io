@@ -65,7 +65,7 @@ async function addComment(post, data) {
   const comment = {
     post: post,
     user: data.user,
-    text: data.comment,
+    text: data.text,
     date: new Date(),
   };
   return store.addComment(comment);

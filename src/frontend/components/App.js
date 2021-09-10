@@ -1,5 +1,7 @@
 import React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import { connect } from "react-redux";
+import { setUser } from "../actions";
 
 import config from "../config";
 
@@ -21,66 +23,87 @@ class App extends React.Component {
     this.handleLogin = this.handleLogin.bind(this);
   }
   componentDidMount() {
+    this.tryLogin();
+  }
+
+  async tryLogin() {
     const token = sessionStorage.getItem("token");
     const userId = sessionStorage.getItem("userId");
-    if (token) {
+    if (token && userId) {
       const user = {
         _id: userId,
-        token: token
-      }
+        token: token,
+      };
       this.handleLogin(user);
+    } else {
+      this.setState({
+        is_logged: false,
+      });
     }
   }
 
   handleLogin = async (user) => {
-    let userAvatar;
-    let username
+    const options = {
+      headers: {
+        Authorization: user.token,
+      },
+    };
     try {
-      const request = await fetch(
-        `${config.api.url}:${config.api.port}/user/${user._id}`
+      let response = await fetch(
+        `${config.api.url}:${config.api.port}/user/${user._id}`,
+        options
       );
-      const response = await request.text();
-      const response2 = await JSON.parse(response);
-      userAvatar = response2.body.avatar;
-      username = response2.body.username;
+      response = await response.text();
+      response = await JSON.parse(response);
+      if (!response.error) {
+        sessionStorage.setItem("token", user.token);
+        sessionStorage.setItem("userId", user._id);
+        this.props.setUser({
+          user: {
+            token: "Bearer " + user.token,
+            username: response.body.username,
+            avatar: response.body.avatar,
+            _id: user._id,
+          },
+        });
+        this.setState({
+          is_logged: true,
+        });
+      }
     } catch (err) {
       console.error("[ERROR]" + err);
+      // this.handleLogout()
     }
-    sessionStorage.setItem("token", user.token);
-    sessionStorage.setItem("userId", user._id);
-    this.setState({
-      is_logged: true,
-      user: {
-        token: user.token,
-        username: username,
-        avatar: userAvatar,
-        _id: user._id,
-      },
-    });
   };
 
   handleLogout() {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("userId");
     this.setState({
-      is_logged: false
+      is_logged: false,
     });
   }
 
   main() {
     return this.state.is_logged ? (
-      <Main user={this.state.user} handleLogout={()=>this.handleLogout()} />
+      <Main handleLogout={() => this.handleLogout()} />
     ) : (
       <Redirect to="/login" />
     );
   }
 
   perfil(e) {
-    return this.state.is_logged ? (
-      <Perfil user={this.state.user} data={e} handleLogout={()=>this.handleLogout()}/>
-    ) : (
-      <Redirect to="/login" />
-    );
+    if(this.state.is_logged){
+      return <Perfil data={e} handleLogout={() => this.handleLogout()} />
+    }
+    else{
+      return <Redirect to="/login" />
+    }
+    // return this.state.is_logged ? (
+    //   <Perfil data={e} handleLogout={() => this.handleLogout()} />
+    // ) : (
+    //   <Redirect to="/login" />
+    // );
   }
   notFound() {
     return this.state.is_logged ? <NotFound /> : <Redirect to="/login" />;
@@ -102,12 +125,17 @@ class App extends React.Component {
               )
             }
           />
-          <Route exact path="/error" render={() => this.notFound()} />
           <Route exact path="/:userId" render={(e) => this.perfil(e)} />
+          <Route render={() => this.notFound()} />
         </Switch>
       </BrowserRouter>
     );
   }
 }
 
-export default App;
+// export default App;
+const mapDispatchToProps = {
+  setUser,
+};
+
+export default connect(null, mapDispatchToProps)(App);

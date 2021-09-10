@@ -1,12 +1,17 @@
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 
 import "./style/Header.css";
 
 function Header(props) {
-  const history = useHistory();
+  let history = useHistory();
+  let location = useLocation()
   const irInicio = () => {
-    history.go(0);
+    if(location.pathname !== '/'){
+      history.push("/")
+    }else{
+      history.go(0);
+    }
   };
 
   return (

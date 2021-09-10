@@ -1,8 +1,11 @@
 import React from "react";
 
+import { connect } from "react-redux";
+import { setUserPage } from "../actions";
+
 import Loading from "../components/Loading";
 import Header from "../components/Header";
-import PostSection from "../components/PostSection";
+import PostSection from "../components/Post_section/PostSection";
 import EditModal from "../components/EditModal";
 import FotoModal from "../components/FotoModal";
 
@@ -13,36 +16,22 @@ import changeImg from "../utils/icons/camara.png";
 import "./style/Perfil.css";
 
 class Perfil extends React.Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       loading: true,
       error: false,
-      post: [],
-      userPage:'',
-      userPageId: this.props.data.match.params.userId,
-      userPageAvatar: "",
       myPage: true,
-      user: {
-        username: this.props.user.username,
-        avatar: this.props.user.avatar,
-        _id: this.props.user._id,
-        token: "Bearer " + this.props.user.token,
-      },
+      post: [],
+      userPageId: this.props.data.match.params.userId,
       isOpened: false,
       isOpenedImg: false,
     };
-    this.openModal = this.openModal.bind(this)
-    this.openModalImg = this.openModalImg.bind(this)
+    this.openModal = this.openModal.bind(this);
+    this.openModalImg = this.openModalImg.bind(this);
   }
-    
-
   componentDidMount() {
-    if (this.state.userPageId !== this.state.user._id) {
-      this.setState({ myPage: false });
-    }
     this.fetchPost();
-    console.log(this.state.myPage);
   }
 
   openModal() {
@@ -55,10 +44,10 @@ class Perfil extends React.Component {
 
   closeModal() {
     this.setState({ isOpened: false, isOpenedImg: false });
-    this.fetchPost()
+    this.fetchPost();
   }
 
-  fetchPost() {
+  async fetchPost() {
     this.setState({ loading: true });
     const userId = this.state.userPageId;
     if (!userId) {
@@ -66,33 +55,80 @@ class Perfil extends React.Component {
     }
     const options = {
       headers: {
-        Authorization: this.state.user.token,
+        Authorization: this.props.user.token,
       },
     };
-    fetch(`${config.api.url}:${config.api.port}/user/${userId}`, options)
+    await fetch(`${config.api.url}:${config.api.port}/user/${userId}`, options)
       .then((response) => response.text())
       .then((response) => JSON.parse(response))
-      .then((response) => response.body)
-      .then((response) =>
-        {console.log(response)
-        this.setState({
-          post: response.posts,
-          userPageAvatar: response.avatar,
-          userPage: response.username,
-          loading: false,
-        })}
-      )
-      .catch((err) => console.error("[error]", err.message));
+      .then((response) => {
+        if (!response.error) {
+          response = response.body
+          this.props.setUserPage({
+            userPage: {
+              username: response.username,
+              avatar: response.avatar,
+              _id: userId,
+            },
+          });
+          if (this.props.user._id !== this.props.userPage._id) {
+            this.setState({ myPage: false });
+          }
+          this.setState({
+            post: response.posts,
+            loading: false,
+          });
+        } else {
+          console.error("[error]", "perfil no encantrado");
+          this.setState({ error: true, loading: false });
+        }
+      })
+      .catch((err) => {
+        console.error("[error]", err.message);
+        this.setState({ error: true, loading: false });
+      });
   }
-
+  //   try {
+  //     let response = await fetch(
+  //       `${config.api.url}:${config.api.port}/user/${userId}`,
+  //       options
+  //     );
+  //     response = await response.text();
+  //     response = await JSON.parse(response);
+  //     response = response.body;
+  //     this.props.setUserPage({
+  //       userPage: {
+  //         username: response.username,
+  //         avatar: response.avatar,
+  //         _id: userId,
+  //       },
+  //     });
+  //     if (this.props.user._id !== this.props.userPage._id) {
+  //       this.setState({ myPage: false });
+  //     }
+  //     console.log("perfil-response");
+  //     this.setState({
+  //       post: response.posts,
+  //       loading: false,
+  //     });
+  //   } catch (err) {
+  //     console.log(error);
+  //     console.error("[error]", err.message)
+  //     this.setState({error: true, loading: false});
+  //   }
+  // }
   render() {
     if (this.state.loading) {
       return <Loading />;
     }
-    let style = !this.state.myPage ? { display: "none" } : {};
-    let userImg2 = this.state.userPageAvatar
-      ? this.state.userPageAvatar
+    if (this.state.error) {
+      return "error";
+    }
+
+    let userImg2 = this.props.userPage.avatar
+      ? this.props.userPage.avatar
       : userImg;
+
     return (
       <div className="perfil">
         <div className="perfil-view">
@@ -103,26 +139,43 @@ class Perfil extends React.Component {
                 <div className="perfil-user-imagen-avatar">
                   <img src={userImg2} alt="user-imagen" />
                 </div>
-                <div className="perfil-user-imagen-change">
-                  <div className="perfil-user-imagen-change_contenedor" onClick={this.openModalImg}>
-                    <img src={changeImg} alt="" />
+                {this.state.myPage ? (
+                  <div
+                    className="perfil-user-imagen-change" /*style={showStyle}*/
+                  >
+                    <div
+                      className="perfil-user-imagen-change_contenedor"
+                      onClick={this.openModalImg}
+                    >
+                      <img src={changeImg} alt="" />
+                    </div>
+                    <FotoModal
+                      onClose={() => this.closeModal()}
+                      isOpened={this.state.isOpenedImg}
+                      userId={this.props.user._id}
+                      userAvatar={userImg2}
+                    />
                   </div>
-                </div>
+                ) : (
+                  <></>
+                )}
               </div>
-              <FotoModal onClose={()=>this.closeModal()} isOpened={this.state.isOpenedImg} userId={this.state.user._id} userAvatar={userImg2}/>
-              <h1>{this.state.userPage}</h1>
-              <button style={style} onClick={this.openModal}>Editar Perfil</button>
-              <EditModal onClose={()=>this.closeModal()} isOpened={this.state.isOpened} user={this.state.user}/>
+              <h1>{this.props.userPage.username}</h1>
+              {this.state.myPage ? (
+                <>
+                  <button onClick={this.openModal}>Editar Perfil</button>
+                  <EditModal
+                    onClose={() => this.closeModal()}
+                    isOpened={this.state.isOpened}
+                  />{" "}
+                </>
+              ) : (
+                <></>
+              )}
             </div>
           </section>
           <section className="perfil-post perfil-contenedor">
-            <PostSection
-              post={this.state.post}
-              userPageId = {this.state.userPageId}
-              user={this.state.user}
-              userPage={this.state.userPage}
-              avatar={this.state.userPageAvatar}
-            />
+            <PostSection post={this.state.post} myPage={this.state.myPage} />
           </section>
         </div>
       </div>
@@ -130,4 +183,14 @@ class Perfil extends React.Component {
   }
 }
 
-export default Perfil;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+    userPage: state.userPage,
+  };
+};
+const mapDispatchToProps = {
+  setUserPage,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Perfil);

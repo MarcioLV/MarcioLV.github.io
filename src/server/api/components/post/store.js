@@ -43,7 +43,6 @@ async function removePost(postId){
   if(myPost.picture && myPost.picture !== ''){
     const oldFileUrl = myPost.picture.split("/")
     const oldFileName = oldFileUrl[oldFileUrl.length - 1]
-    console.log(oldFileName)
     fs.unlink("./src/server/public/pictures/" + oldFileName)
       .then(() => {
         console.log("File removed");

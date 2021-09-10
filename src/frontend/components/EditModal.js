@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import ReactDOM from 'react-dom'
+import ReactDOM from "react-dom";
+
+import { connect } from "react-redux";
+import { setUser } from "../actions";
 
 import config from "../config";
 
 import "./style/EditModal.css";
 
 function EditModal(props) {
-  const usuario = props.user
-  if(!props.isOpened){
-    return null
+  const usuario = props.user;
+  if (!props.isOpened) {
+    return null;
   }
 
   const [locked, setLocked] = useState(true);
@@ -46,16 +49,17 @@ function EditModal(props) {
       newPassword: data.password2,
     };
     const status = await fetchUser(user);
-    if(status === 500){
-      alert("Contraseña Incorrecta")
-    }else{
-      closeModal()
+    if (status === 500) {
+      alert("Contraseña Incorrecta");
+    } else {
+      props.setUser({ user: { ...props.user, username: user.username } });
+      closeModal();
     }
   };
 
   const closeModal = () => {
-    props.onClose()
-  }
+    props.onClose();
+  };
 
   const fetchUser = async (user) => {
     try {
@@ -70,7 +74,7 @@ function EditModal(props) {
           body: JSON.stringify(user),
         }
       );
-      return request.status
+      return request.status;
     } catch (err) {
       alert("Hubo un error");
       console.error("[error]", err);
@@ -84,10 +88,12 @@ function EditModal(props) {
           <div className="editModal-header_titulo">
             <h1>Editar Perfil</h1>
           </div>
-          <button className="closeButton" onClick={closeModal}>X</button>
+          <button className="closeButton" onClick={closeModal}>
+            X
+          </button>
         </div>
         <div className="editModal-inputs">
-          <h3>UserName</h3>
+          <h3>Nombre de Usuario</h3>
           <input
             type="text"
             placeholder="Nombre Usuario"
@@ -128,7 +134,9 @@ function EditModal(props) {
           </div>
         </div>
         <div className="editModal-button">
-          <button className="editModal-button_cancelar" onClick={closeModal}>Cancelar</button>
+          <button className="editModal-button_cancelar" onClick={closeModal}>
+            Cancelar
+          </button>
           <button className="editModal-button_aceptar" onClick={handleSubmit}>
             Aceptar
           </button>
@@ -139,4 +147,11 @@ function EditModal(props) {
   );
 }
 
-export default EditModal;
+const mapStateToProps = (state) => {
+  return { user: state.user };
+};
+const mapDispatchToProps = {
+  setUser,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditModal);

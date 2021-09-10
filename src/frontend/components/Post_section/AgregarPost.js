@@ -1,8 +1,9 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import {connect} from "react-redux"
 
-import user from "../utils/icons/user.png";
-import loadPic from "../utils/icons/picture1.png";
+import user from "../../utils/icons/user.png";
+import loadPic from "../../utils/icons/picture1.png";
 
 import "./style/AgregarPost.css";
 
@@ -16,12 +17,6 @@ function AgregarPost(prop) {
 
   let h = useRef(null);
   const textareaheight = 20;
-
-  // let imgStyle = {
-  //   display: "none",
-  //   // widht: "inherit",
-  //   // height: "200px",
-  // };
 
   const change = (e) => {
     if (e.target.files.length > 0) {
@@ -45,18 +40,6 @@ function AgregarPost(prop) {
             height *= maxWidth / width;
             width = maxWidth;
           }
-          // if (width > height) {
-          //   if (width > MAX_WIDTH) {
-          //     height *= MAX_WIDTH / width;
-          //     width = MAX_WIDTH;
-          //   }
-          // } else {
-          //   if (height > MAX_HEIGHT) {
-          //     width *= MAX_HEIGHT / height;
-          //     height = MAX_HEIGHT;
-          //   }
-          // }
-
           image.width = width;
           image.height = height;
           setFile(image);
@@ -95,7 +78,7 @@ function AgregarPost(prop) {
     setPost(e.target.value);
   };
 
-  let userImg = prop.avatar ? prop.avatar : user;
+  let userImg = prop.user.avatar ? prop.user.avatar : user;
 
   //imagen para post
   let picture = "";
@@ -143,7 +126,7 @@ function AgregarPost(prop) {
           <figure className="addPost-user-figure">
             <Link
               to={{
-                pathname: "/" + prop.userId,
+                pathname: "/" + prop.user._id,
               }}
             >
               <img
@@ -158,10 +141,10 @@ function AgregarPost(prop) {
           <h4>
             <Link
               to={{
-                pathname: "/" + prop.userId,
+                pathname: "/" + prop.user._id,
               }}
             >
-              {prop.userPage}
+              {prop.user.username}
             </Link>
           </h4>
         </div>
@@ -203,5 +186,11 @@ function AgregarPost(prop) {
     </div>
   );
 }
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+    userPage: state.userPage,
+  };
+};
 
-export default AgregarPost;
+export default connect(mapStateToProps, null)(AgregarPost);

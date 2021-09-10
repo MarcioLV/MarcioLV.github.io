@@ -19,7 +19,7 @@ const likeSchema = new Schema({
 
 const commentSchema = new Schema({
   post: Object,
-  user: String,
+  user: Object,
   text: String,
   date: Date
 })

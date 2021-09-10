@@ -98,36 +98,50 @@
 .post-like button:hover {
   background-color: rgb(65, 64, 64);
 }
-
-.post-comment_section-input,
-.post-comment_section-input input,
-.post-comment_section-input button,
-.post-comment_section-comment button {
-  background-color: #3a3b3c;
-  border: none;
-  height: 36px;
-  border-radius: 18px;
-}
-
-.post-comment_section-input,
-.post-comment_section-comment {
+.post-comment_section-input{
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 10px;
 }
 
-.post-comment_section-input input {
-  outline: none;
-  padding-left: 10px;
-  width: 100%;
+.post-comment_section-input{
+  background-color: #3a3b3c;
   color: #fff;
+  font-size: 14px;
+  border: none;
+  border-radius: 18px;
+  overflow: hidden
+}
+.post-comment_section-input textarea,
+.post-comment_section-input button,
+.post-comment_section-comment button {
+  background-color: #3a3b3c;
+  color: #fff;
+  font-size: 14px;
+  border: none;
+  border-radius: 18px;
 }
 
-.post-comment_section-input button
-/* .post-comment_section-comment button */
-{
+.post-comment_section-input textarea {
+  outline: none;
+  resize: none;
+  font-size: 14px;
+  /* height: 14px; */
+  max-height: 200px;
+  width: 100%;
+  margin: 10px 0;
+  padding: 0 12px;
+  /* padding: 0 10px; */
+}
+
+.post-comment_section-input button{
+  height: 36px;
+  /* height: inherit; */
   width: 100px;
   color: aliceblue;
+  border-bottom-right-radius: 0;
+  align-self:flex-start;
 }
 
 .post-comment_section-input button:hover{
@@ -137,6 +151,12 @@
 .post-comment_section-list{
   display: flex;
   flex-direction: column-reverse;
+}
+
+.post-comment_section-comment {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .post-comment_section-comment {

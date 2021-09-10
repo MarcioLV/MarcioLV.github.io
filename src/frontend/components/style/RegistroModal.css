@@ -24,7 +24,6 @@ button{
   padding: 15px; 
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
 }
 .registerModal-header{
   display: flex;
@@ -67,7 +66,6 @@ button{
 
 .registerModal-inputs input:focus{
   border: 1px solid lightskyblue;
-  opacity: 0.65; 
 }
 
 .registerModal-inputs button{

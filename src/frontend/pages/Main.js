@@ -1,14 +1,13 @@
 import React from "react";
 import config from "../config";
 
-import {Redirect} from "react-router-dom";
-
+import { connect } from "react-redux";
 
 import "./style/Main.css";
 
-import PostSection from '../components/PostSection'
-import Loading from '../components/Loading'
-import Header from '../components/Header'
+import PostSection from "../components/Post_section/PostSection";
+import Loading from "../components/Loading";
+import Header from "../components/Header";
 
 class Main extends React.Component {
   constructor(props) {
@@ -17,46 +16,56 @@ class Main extends React.Component {
       loading: true,
       error: false,
       post: [],
-      user: {
-        username: props.user.username,
-        avatar: props.user.avatar,
-        _id: props.user._id,
-        token: "Bearer " + props.user.token,
-      },
     };
   }
-  
+
   componentDidMount() {
-    console.log("main");
     this.fetchPost();
   }
 
   fetchPost() {
-    this.setState({loading: true, error: false})
+    this.setState({ loading: true, error: false });
     const options = {
       headers: {
-        Authorization: this.state.user.token,
+        Authorization: this.props.user.token,
       },
     };
     fetch(`${config.api.url}:${config.api.port}/post`, options)
       .then((response) => response.text())
       .then((response) => JSON.parse(response))
       .then((response) => Array.from(response.body))
-      .then((response) => this.setState({ post: response, loading: false, error: false }))
-      .catch((err) => console.error("[error]", err.message));
+      .then((response) =>
+        this.setState({ post: response, loading: false, error: false })
+      )
+      .catch((err) => {
+        console.error("[error]", err.message)
+        this.setState({loading: false, error: true})
+
+      });
   }
 
   render() {
-    if(this.state.loading){return <Loading />}
+    if (this.state.loading) {
+      return <Loading />;
+    }
+    if (this.state.error) {
+      return "error";
+    }
     return (
       <div className="wall">
-        <Header handleLogout={this.props.handleLogout}/>
+        <Header handleLogout={this.props.handleLogout} />
         <div className="wall-center">
-          <PostSection user={this.state.user} post={this.state.post}/>
+          <PostSection myPage={true} post={this.state.post} />
         </div>
       </div>
     );
   }
 }
 
-export default Main;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  };
+};
+
+export default connect(mapStateToProps, null)(Main);
