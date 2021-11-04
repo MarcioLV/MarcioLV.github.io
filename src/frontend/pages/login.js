@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 
 import "./style/login.css";
 import LoginBox from "../components/LoginBox";
@@ -7,6 +7,10 @@ import config from "../config";
 
 function Login(props) {
   const [errLog, setErrLog] = useState(false)
+
+  // useEffect(()=>{
+  //   handleSubmit("marcio", "marcio")
+  // },[])
 
   const handleSubmit = (user, pass) => {
     const data = {

@@ -55,22 +55,13 @@
 .addPost-imagen label{
   cursor: pointer;
 }
+
 .addPost-imagen img{
   border-radius: 3px;
 }
 
 .addPost-imagen input{
   display: none;
-}
-
-.addPost textarea{
-  margin:12px 0;
-}
-
-.addPost-input{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 .addPost-input-imagen{
@@ -81,29 +72,59 @@
   justify-content: center;
   align-items: center;
 }
-
-
-.addPost textarea{
-  background-color: #3a3b3c;
-  color: #fff;
-  font-size: 14px;
-  border: none;
-  height: 20px;
-  max-height: 200px;
-  border-radius: 18px;
-  padding: 10px 15px;
-  outline: none;
-  resize: none;
-  overflow: hidden
+.addPost-input{
+  width: 100%;
+  padding: 10px 0;
 }
 
-/* .addPost-input img{
-  width: "inherit"
-}  */
+.addPost-input-container{
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  background-color: #3a3b3c;
+  color: #fff;
 
-.addPost button{
+}
+.addPost-input-container,
+.addPost-input-container button{
+  border-radius: 18px;
+}
+
+.addPost-input-container,
+.addPost-input-container textarea,
+.addPost-input-container button{
+  font-size: 16px;
+  border: none;
+}
+
+.addPost-input-container textarea{
+  outline: none;
+  resize: none;
+  height: 20px;
+  max-height: 200px;
+  width: 100%;
+  padding: 0 12px;
+  margin: 5px 0;
+  background-color: #3a3b3c;
+  color: #fff;
+}
+
+.addPost-input button{
+  width: 100%;
   color: #fff;
   background-color: #3386f2;
   padding: 10px
 }
+.addPost-input button:hover{
+  background-color: #5691df;
+}
+
+.addPost-input-imagen img{
+  max-width: 450px;
+  max-height: 60vh;
+}
+
+
 

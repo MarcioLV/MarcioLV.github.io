@@ -1,6 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {connect} from "react-redux"
+import { connect } from "react-redux";
 
 import user from "../../utils/icons/user.png";
 import loadPic from "../../utils/icons/picture1.png";
@@ -9,14 +9,27 @@ import "./style/AgregarPost.css";
 
 function AgregarPost(prop) {
   const [post, setPost] = useState("");
-
+  const [height, setHeight] = useState();
   //uso en el frontend
   const [file, setFile] = useState();
   //lo que mando
   const [imagen, setImagen] = useState();
 
   let h = useRef(null);
-  const textareaheight = 20;
+
+  useEffect(() => {
+    if (h.current) {
+      const textHeigth = h.current.clientHeight;
+      setHeight(textHeigth);
+    }
+  }, [h.current]);
+
+  useEffect(() => {
+    if (height) {
+      h.current.style.height = height + "px";
+      h.current.style.height = h.current.scrollHeight + "px";
+    }
+  }, [post]);
 
   const change = (e) => {
     if (e.target.files.length > 0) {
@@ -60,9 +73,8 @@ function AgregarPost(prop) {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!post) {
+  const handleSubmit = () => {
+    if (!post && !file) {
       return alert("Escribe algo");
     }
 
@@ -72,29 +84,12 @@ function AgregarPost(prop) {
     setFile(null);
   };
 
-  const handleAddText = (e) => {
-    h.current.style.height = textareaheight + "px";
-    h.current.style.height = h.current.scrollHeight - 20 + "px";
-    setPost(e.target.value);
-  };
+  // const handleAddText = (e) => {
+  //   setPost(e.target.value);
+  // };
 
   let userImg = prop.user.avatar ? prop.user.avatar : user;
 
-  //imagen para post
-  let picture = "";
-  let imgStyle = { display: "none" };
-  const maxWidth = 450;
-  if (file) {
-    picture = file.src;
-    imgStyle.display = "flex";
-    let width = file.width;
-    if (width > maxWidth) {
-      imgStyle.width = "inherit";
-    } else {
-      imgStyle.width = file.width;
-    }
-  }
-  //imagen de perfil
   let i = useRef(null);
   const check = () => {
     if (userImg == user) {
@@ -160,29 +155,25 @@ function AgregarPost(prop) {
           />
         </div>
       </div>
-      <form action="">
-        <div className="addPost-input">
+      <div className="addPost-input">
+        <div className="addPost-input-container">
           <textarea
             value={post}
             type="text"
             placeholder="Agregar un post"
-            style={{ height: textareaheight + "px" }}
             ref={h}
             onChange={(e) => {
-              handleAddText(e);
+              setPost(e.target.value);
             }}
           />
-          <figure
-            className="addPost-input-imagen"
-            style={{ display: imgStyle.display }}
-          >
-            <img src={picture} style={imgStyle} />
-          </figure>
-          <button type="submit" onClick={(e) => handleSubmit(e)}>
-            Agregar
-          </button>
         </div>
-      </form>
+        {file && <figure
+          className="addPost-input-imagen"
+        >
+          <img src={file.src}/>
+        </figure>}
+        <button onClick={handleSubmit}>Agregar</button>
+      </div>
     </div>
   );
 }
