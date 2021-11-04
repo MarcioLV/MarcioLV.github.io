@@ -64,7 +64,7 @@ function EditModal(props) {
   const fetchUser = async (user) => {
     try {
       const request = await fetch(
-        `${config.api.url}:${config.api.port}/user/${usuario._id}`,
+        `${config.api.url}:${config.api.port}/api/user/${usuario._id}`,
         {
           method: "PUT",
           mode: "cors",

@@ -16,14 +16,16 @@ button{
   padding: 15px; 
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
 }
 
 .login-box-info{
-  display: flex;
-  flex-direction: column;
   padding-bottom: 15px;
   border-bottom: 1px solid gray;
+}
+
+.login-box-info form{
+  display: flex;
+  flex-direction: column;
 }
 
 .login-box-info input,
@@ -51,6 +53,14 @@ button{
   font-weight: bold;
   color: #fff;
   background-color:#3386f2
+}
+
+.login-box-info small{
+  align-self: center;
+  color: red;
+  font-size: 14px;
+  font-weight: bold;
+  visibility: hidden;
 }
 
 .register{

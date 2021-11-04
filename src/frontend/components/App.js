@@ -50,7 +50,7 @@ class App extends React.Component {
     };
     try {
       let response = await fetch(
-        `${config.api.url}:${config.api.port}/user/${user._id}`,
+        `${config.api.url}:${config.api.port}/api/user/${user._id}`,
         options
       );
       response = await response.text();
@@ -99,11 +99,6 @@ class App extends React.Component {
     else{
       return <Redirect to="/login" />
     }
-    // return this.state.is_logged ? (
-    //   <Perfil data={e} handleLogout={() => this.handleLogout()} />
-    // ) : (
-    //   <Redirect to="/login" />
-    // );
   }
   notFound() {
     return this.state.is_logged ? <NotFound /> : <Redirect to="/login" />;

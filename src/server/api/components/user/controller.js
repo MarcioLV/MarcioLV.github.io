@@ -21,6 +21,11 @@ async function addUser(body) {
     username: body.username,
   };
 
+  const taken = await store.verifyUser(user)
+  if(taken){
+    return "taken"
+  }
+
   await auth.upsert({
     _id: user._id,
     username: user.username,
@@ -29,6 +34,7 @@ async function addUser(body) {
 
   return store.add(user);
 }
+
 async function editUser(userId, body) {
   const user = {
     _id: userId,

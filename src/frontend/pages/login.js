@@ -1,42 +1,25 @@
-import React from "react";
+import React, {useState} from "react";
 
 import "./style/login.css";
 import LoginBox from "../components/LoginBox";
 
 import config from "../config";
 
-class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    // this.state = {
-    //   loading: true,
-    //   error: false,
-    // };
-  }
-  // login automatico para desarrollo
-  // componentDidMount(){
-  //   const data = {
-  //     username: 'marlord',
-  //     password: 'marlord',
-  //   };
-  //   this.fetchLogin(data);
-  // }
+function Login(props) {
+  const [errLog, setErrLog] = useState(false)
 
-  handleSubmit(user, pass) {
-    if (!user || !pass) {
-      return alert("Rellenar todos los campos");
-    }
+  const handleSubmit = (user, pass) => {
     const data = {
       username: user,
       password: pass,
     };
-    this.fetchLogin(data);
-  }
+    fetchLogin(data);
+  };
 
-  fetchLogin = async (data) => {
+  const fetchLogin = async (data) => {
     try {
-      const request = await fetch(
-        `${config.api.url}:${config.api.port}/auth/login`,
+      let response = await fetch(
+        `${config.api.url}:${config.api.port}/api/auth/login`,
         {
           method: "POST",
           mode: "cors",
@@ -46,43 +29,32 @@ class Login extends React.Component {
           body: JSON.stringify(data),
         }
       );
-      const response = await request.text();
-      const response2 = await JSON.parse(response);
-      if (response2.status === 400) {
-        alert("Datos Incorrenctos");
+      response = await response.json();
+      if (response.status === 400) {
+        setErrLog(true);
       } else {
-        this.props.onLogin(response2.body);
+        props.onLogin(response.body);
       }
     } catch (err) {
+      alert("Hubo un error")
       console.error("[ERROR]" + err);
     }
   };
-
-  render() {
-    // if(this.state.loading){
-    //   // return <Loading />
-    //   return "Loading..."
-    // }
-    // if(this.state.error){
-    //   // return <Error />
-    //   return 'Error'
-    // }
-    return (
-      <div className="login">
-        <div className="login-conteiner">
-          <div className="login-page-name">
-            <h1>RedSocial</h1>
-            <h3>
-              Comunicate y comparti con las personas que forman parte de tu vida
-            </h3>
-          </div>
-          <div className="login-page-input">
-            <LoginBox handleSubmit={this.handleSubmit.bind(this)} />
-          </div>
+  return (
+    <div className="login">
+      <div className="login-conteiner">
+        <div className="login-page-name">
+          <h1>RedSocial</h1>
+          <h3>
+            Comunicate y comparti con las personas que forman parte de tu vida
+          </h3>
+        </div>
+        <div className="login-page-input">
+          <LoginBox handleSubmit={handleSubmit} errLog={errLog} setErrLog={setErrLog}/>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default Login;

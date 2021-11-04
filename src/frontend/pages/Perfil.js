@@ -58,7 +58,7 @@ class Perfil extends React.Component {
         Authorization: this.props.user.token,
       },
     };
-    await fetch(`${config.api.url}:${config.api.port}/user/${userId}`, options)
+    await fetch(`${config.api.url}:${config.api.port}/api/user/${userId}`, options)
       .then((response) => response.text())
       .then((response) => JSON.parse(response))
       .then((response) => {

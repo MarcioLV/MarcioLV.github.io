@@ -40,7 +40,7 @@ class PostSection extends React.Component {
 
   async fetchAddPost(data) {
     let error = false;
-    let datos = await fetch(`${config.api.url}:${config.api.port}/post`, {
+    let datos = await fetch(`${config.api.url}:${config.api.port}/api/post`, {
       method: "POST",
       mode: "cors",
       headers: {
@@ -101,7 +101,7 @@ class PostSection extends React.Component {
 
   async fetchDeletePost(id){
     let error;
-    await fetch(`${config.api.url}:${config.api.port}/post/${id}`, {
+    await fetch(`${config.api.url}:${config.api.port}/api/post/${id}`, {
       method: "DELETE",
       mode: "cors",
       headers: {
@@ -137,7 +137,7 @@ class PostSection extends React.Component {
     if (modo) {
       id += "/";
     }
-    await fetch(`${config.api.url}:${config.api.port}/post/${id}${modo}`, {
+    await fetch(`${config.api.url}:${config.api.port}/api/post/${id}${modo}`, {
       method: "POST",
       mode: "cors",
       headers: {
@@ -159,7 +159,7 @@ class PostSection extends React.Component {
 
   async fetchDeleteLike(data, id, modo) {
     let error;
-    await fetch(`${config.api.url}:${config.api.port}/post/${id}/${modo}`, {
+    await fetch(`${config.api.url}:${config.api.port}/api/post/${id}/${modo}`, {
       method: "DELETE",
       mode: "cors",
       headers: {

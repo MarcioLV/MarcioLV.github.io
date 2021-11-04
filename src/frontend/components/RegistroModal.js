@@ -3,25 +3,39 @@ import React, { useState } from "react";
 import "./style/RegistroModal.css";
 
 function RegistroModal(props) {
+  const { taken } = props;
+  const [errReg, setErrReg] = useState(false);
+  const [pass, setPass] = useState(false);
   const closeModal = () => {
     props.closeModal();
   };
 
   const [data, setData] = useState({
-    username: '',
-    password: '',
-    password2: ''
-  })
+    username: "",
+    password: "",
+    password2: "",
+  });
 
-  const handleSubmit = ()=>{
-    if(!data.username || !data.password || !data.password2){
-      return alert("Rellenar todos lo campos")
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (!data.username || !data.password || !data.password2) {
+      return setErrReg(true);
     }
-    if(data.password !== data.password2){
-      return alert("Contraseñas no coinciden")
+    if (data.password !== data.password2) {
+      return setPass(true);
     }
-    props.handleSubmit(data)
-  }
+    const user = {
+      username: data.username,
+      password: data.password
+    }
+    props.handleSubmit(user);
+  };
+
+  const erraseTaken = () => {
+    setErrReg(false);
+    setPass(false);
+    props.erraseTaken();
+  };
 
   return (
     <div className="registerModal">
@@ -36,12 +50,37 @@ function RegistroModal(props) {
           </button>
         </div>
         <div className="registerModal-inputs">
-          <input type="text" placeholder="Nombre Usuario" onChange={(e) => setData({...data, username: e.target.value})}/>
-          <input type="password" placeholder="Contraseña" onChange={(e) => setData({...data, password: e.target.value})}/>
-          <input type="password" placeholder="Repetir Contraseña" onChange={(e) => setData({...data, password2: e.target.value})}/>
-        </div>
-        <div className="registerModal-button">
-          <button onClick={handleSubmit}>Registrarte</button>
+          <form>
+            <small style={errReg || taken ? { visibility: "visible" } : {}}>
+              {errReg
+                ? "Rellena todos los campos"
+                : "Nombre de usuario ocupado"}
+            </small>
+            <input
+              type="text"
+              placeholder="Nombre Usuario"
+              onChange={(e) => setData({ ...data, username: e.target.value })}
+              onClick={erraseTaken}
+            />
+            <small style={pass ? { visibility: "visible" } : {}}>
+              Las contraseñas no coinciden
+            </small>
+            <input
+              type="password"
+              placeholder="Contraseña"
+              onChange={(e) => setData({ ...data, password: e.target.value })}
+              onClick={erraseTaken}
+            />
+            <input
+              type="password"
+              placeholder="Repetir Contraseña"
+              onChange={(e) => setData({ ...data, password2: e.target.value })}
+              onClick={erraseTaken}
+            />
+            <div className="registerModal-button">
+              <button type="submit" onClick={(e)=>handleSubmit(e)}>Registrarte</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

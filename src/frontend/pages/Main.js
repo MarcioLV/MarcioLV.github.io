@@ -30,7 +30,7 @@ class Main extends React.Component {
         Authorization: this.props.user.token,
       },
     };
-    fetch(`${config.api.url}:${config.api.port}/post`, options)
+    fetch(`${config.api.url}:${config.api.port}/api/post`, options)
       .then((response) => response.text())
       .then((response) => JSON.parse(response))
       .then((response) => Array.from(response.body))

@@ -3,6 +3,7 @@ const response = require("../../../network/response")
 const controller = require("./controller")
 const multer = require('multer')
 const config = require('../../../config')
+
 const router = express.Router()
 
 const storage = multer.diskStorage({
@@ -56,6 +57,7 @@ function edit(req, res, next){
     })
     .catch(next)
 }
+
 function addAvatar(req, res, next){
   controller.addAvatar(req.params.user, req.file)
     .then((data)=>{
@@ -63,4 +65,5 @@ function addAvatar(req, res, next){
     })
     .catch(next)
 }
+
 module.exports = router

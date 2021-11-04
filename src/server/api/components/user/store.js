@@ -9,6 +9,10 @@ async function getUserList() {
   return listName;
 }
 
+async function verifyUser(user){
+  return User.findOne({username: user.username})
+}
+
 async function getUser(user) {
   let listUser = await User.findOne(user);
   listUser = await Post.populate(listUser, { path: "posts" });
@@ -53,4 +57,5 @@ module.exports = {
   add: addUser,
   edit: editUser,
   addAvatar,
+  verifyUser
 };

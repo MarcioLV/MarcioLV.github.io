@@ -45,7 +45,7 @@ function CommentSection(props) {
   const fetchAddComment = async (postId, data) => {
     let error = false
     let datos = {}
-    await fetch(`${config.api.url}:${config.api.port}/post/${postId}/comment`, {
+    await fetch(`${config.api.url}:${config.api.port}/api/post/${postId}/comment`, {
       method: "POST",
       mode: "cors",
       headers: {

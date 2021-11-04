@@ -32,19 +32,6 @@ function FotoModal(props) {
       reader.onload = function (f) {
         image.src = f.target.result;
         image.onload = async function () {
-          // const maxHeight = 200;
-          // const maxWidth = 200;
-          // let width = image.width;
-          // let height = image.height;
-          // if (height > maxHeight) {
-          //   width *= maxHeight / height;
-          //   height = maxHeight;
-          // }
-
-          // if (width > maxWidth) {
-          //   height *= maxWidth / width;
-          //   width = maxWidth;
-          // }
           const MAX_WIDTH = 210;
           const MAX_HEIGHT = 210;
           let width = image.width;
@@ -112,7 +99,7 @@ function FotoModal(props) {
   const fetchUserAvatar = async (user, info) => {
     try {
       const request = await fetch(
-        `${config.api.url}:${config.api.port}/user/${user}`,
+        `${config.api.url}:${config.api.port}/api/user/${user}`,
         {
           method: "POST",
           mode: "cors",

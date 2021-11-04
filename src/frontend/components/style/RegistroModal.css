@@ -43,10 +43,23 @@ button{
 }
 
 .registerModal-inputs{
+  /* display: flex;
+  flex-direction: column; */
+  padding: 15px 0;
+}
+.registerModal-inputs form{
   display: flex;
   flex-direction: column;
-  padding: 15px 0;
+}
 
+
+.registerModal-inputs small{
+  align-self: center;
+  color: red;
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  visibility: hidden;
 }
 
 .registerModal-inputs input,
@@ -54,6 +67,7 @@ button{
   height: 45px;
   margin-bottom: 15px;
 }
+
 
 .registerModal-inputs input{
   border-radius: 5px;
@@ -77,7 +91,7 @@ button{
 
 .registerModal-button{
   margin: 0 auto;
-  margin-bottom: 15px;
+  margin-top: 15px;
 }
 
 .registerModal-button button{

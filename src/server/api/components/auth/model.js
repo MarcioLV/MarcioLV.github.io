@@ -4,7 +4,7 @@ const {Schema} = mongoose
 
 const myAuthSchema = new Schema({
   _id: String,
-  username: String,
+  username: {type: String, unique: true , require: true},
   password: String
 })
 

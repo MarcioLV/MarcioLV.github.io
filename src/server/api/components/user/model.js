@@ -4,7 +4,7 @@ const {Schema} = mongoose
 
 const myUserSchema = new Schema({
   _id: String,
-  username: String,
+  username: {type: String, unique: true , require: true},
   avatar: String,
   posts: [{type: Schema.ObjectId, ref: "post"}],
 })

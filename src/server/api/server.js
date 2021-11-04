@@ -1,31 +1,38 @@
-const config = require('../config')
-const path = require('path')
-const express = require('express')
-const errors = require("../network/error")
-const user = require("./components/user/network")
-const auth = require("./components/auth/network")
-const post = require("./components/post/network")
-const cors = require('cors')
-// const bodyParser = require("body-parser")
+const path = require("path");
+const express = require("express");
+
+const config = require("../config");
+const errors = require("../network/error");
+const user = require("./components/user/network");
+const auth = require("./components/auth/network");
+const post = require("./components/post/network");
+const cors = require("cors");
+
 const app = express();
 
-app.use(express.json())
-app.use(cors())
-// app.use(bodyParser.json())
-app.use(express.urlencoded({extended: false}))
 
-app.use("/user", user)
-app.use("/auth", auth)
-app.use("/post", post)
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
+app.use("/api/user", user);
+app.use("/api/auth", auth);
+app.use("/api/post", post);
 
+app.use(errors);
 
-app.use(errors)
+const db = require("../store/mongoDB");
+db(config.store.dbUrl);
 
-const db = require('../store/mongoDB')
-db(config.store.dbUrl)
+app.use(express.static(path.join(__dirname, "../public/dist")));
+app.use(express.static(path.join(__dirname, "../public")));
 
-app.use(express.static(path.join(__dirname, "../public")))
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/dist/index.html"), (err) => {
+    if (err) res.status(500).send(err);
+  });
+});
+
 
 app.listen(config.api.port, (err) => {
   if (err) {
@@ -34,5 +41,6 @@ app.listen(config.api.port, (err) => {
     console.log("Servidor escuchando en el puerto " + config.api.port);
   }
 });
+
 
 

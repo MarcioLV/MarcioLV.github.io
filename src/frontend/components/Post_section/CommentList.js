@@ -39,7 +39,7 @@ function CommentList(prop) {
 
   const fetchDeleteComment= async (commentId, postId)=> {
     let error = false
-    await fetch(`${config.api.url}:${config.api.port}/post/${postId}/comment`, {
+    await fetch(`${config.api.url}:${config.api.port}/api/post/${postId}/comment`, {
       method: "DELETE",
       mode: "cors",
       headers: {
