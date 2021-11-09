@@ -1,5 +1,5 @@
 /node_modules
 .env
-/src/public/dist
-/src/public/files
-/src/public/pictures
+/src/server/public/dist
+/src/server/public/files
+/src/server/public/pictures
