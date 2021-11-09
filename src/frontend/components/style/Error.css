@@ -1,0 +1,40 @@
+.error{
+  width: 100%;
+  height: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #18191a;
+}
+
+.error-msj{
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 35vh;
+  color: #fff
+}
+
+.error-msj h1{
+  margin-bottom: 10px;
+  font-size: 5rem;
+}
+.error-msj h2{
+  width: fit-content;
+  font-size: 2.4rem;
+}
+
+@media (max-width: 320px) {
+  .error-msj h1{
+    /* margin-bottom: 10px; */
+    font-size: 20vw;
+  }
+  .error-msj h2{
+    /* width: fit-content; */
+    font-size: 10vw;
+  }
+}

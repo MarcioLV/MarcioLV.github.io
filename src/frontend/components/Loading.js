@@ -1,16 +1,13 @@
-import React from 'react'
+import React from "react";
 
-import './style/loading.css'
+import "./style/Loading.css";
 
-function Loading(){
+const Loading = () => {
   return (
     <div className="loading">
-      <div className="loading-container">
-        <h1>Cargando...</h1>
-      </div>
+      <div className="preloader"></div>
     </div>
-  )
+  );
+};
 
-}
-
-export default Loading
+export default Loading;

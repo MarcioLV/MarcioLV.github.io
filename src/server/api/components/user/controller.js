@@ -1,10 +1,13 @@
 const { nanoid } = require("nanoid");
 const auth = require("../auth/controller");
-const config = require("../../../config");
+const config = require("../../../../../config");
 const store = require("./store");
 
-function list() {
-  return store.list();
+function list(query) {
+  const q = {
+    username: query.user
+  }
+  return store.list(q);
 }
 
 function get(data) {
@@ -65,9 +68,12 @@ async function editUser(userId, body) {
 function addAvatar(user, avatar) {
   let fileUrl = "";
   if (avatar) {
-    fileUrl = `${config.api.url}:${config.api.port}/files/${avatar.filename}`;
+    fileUrl = `/files/${avatar.filename}`;
   }
+
   return store.addAvatar(user, fileUrl);
+
+
 }
 
 module.exports = {

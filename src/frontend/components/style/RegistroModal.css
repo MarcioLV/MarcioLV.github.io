@@ -14,11 +14,13 @@ button{
   display: flex;
   align-items: center;
   justify-content: center;
+  height: inherit;
 
   font-family: Helvetica, Arial, sans-serif;
 }
 .registerModal-conteiner{
-  width: 350px;
+  max-width: 350px;
+  width: 100%;
   background-color: #fff;
   border-radius: 10px;
   padding: 15px; 
@@ -92,10 +94,12 @@ button{
 .registerModal-button{
   margin: 0 auto;
   margin-top: 15px;
+  max-width: 200px;
+  width: 100%;
 }
 
 .registerModal-button button{
-  width: 200px;
+  width: 100%;
   height: 35px;
   font-size: 1.2em;
   font-family: 'Times New Roman', Times, serif;
@@ -105,3 +109,17 @@ button{
   background-color: rgb(44, 160, 44);
 }
 
+@media (max-width: 426px){
+  .registerModal-conteiner{
+    /* width: 100%; */
+    height: 94%;
+    border-radius: 0;
+    overflow: auto;
+  }
+}
+@media (max-height: 426px){
+  .registerModal-conteiner{
+    height: 94%;
+    overflow: auto;
+  }
+}

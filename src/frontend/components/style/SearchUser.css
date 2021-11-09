@@ -1,0 +1,38 @@
+.searchUser_user-container{
+  display: flex;
+  align-items: center;
+  /* border: 1px solid red; */
+  color: #fff;
+  margin: 3px 0;
+  padding:10px;
+  padding-left: 20px;
+  background-color: #242526;
+}
+
+.searchUser_user-container:hover{
+  background-color: darkgrey;
+}
+
+.searchUser_user-figure {
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  margin-right:10px; 
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: antiquewhite;
+}
+
+/* .searchUser_user-figure a {
+  width: inherit;
+  height: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
+
+.searchUser_user-figure-img_default {
+  width: 37px;
+}

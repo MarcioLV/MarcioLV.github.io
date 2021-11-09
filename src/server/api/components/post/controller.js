@@ -1,7 +1,16 @@
-const { nanoid } = require("nanoid");
+// const { nanoid } = require("nanoid");
+const moment = require('moment-timezone')
 const store = require("./store");
 const error = require("../../../utils/error");
-const config = require("../../../config")
+const config = require("../../../../../config");
+
+function createDate (){
+  let date = new Date()
+  date = moment(date)
+  date = date.tz('America/Argentina/Buenos_Aires')
+  date = date.toString()
+  return date
+}
 
 async function list(post_id) {
   const postId = {};
@@ -18,16 +27,18 @@ async function addPost(body, picture) {
     throw error("No viene user", 401);
   }
 
+  const date = createDate()
+
   const post = {
     user: body.user,
     text: body.text,
     like: [],
     comment: [],
-    date: new Date(),
+    date: date,
   };
   
   if(picture){
-    post.picture = `${config.api.url}:${config.api.port}/pictures/${picture.filename}`;
+    post.picture = `/pictures/${picture.filename}`;
   }
 
   return store.add(post);
@@ -45,6 +56,14 @@ async function getComment(comment_id){
   return comment
 }
 
+// async function getLike(like_id){
+//   const likeId = {
+//     _id: like_id
+//   }
+//   const like = await store.getLike(likeId)
+//   return like
+// }
+
 async function addLike(post, user) {
   const like = {
     post: post,
@@ -53,6 +72,7 @@ async function addLike(post, user) {
   };
   return store.addLike(like);
 }
+
 async function removeLike(post, user){
   const like = {
     post: post,
@@ -82,6 +102,7 @@ module.exports = {
   list,
   addPost,
   deletePost,
+  // getLike,
   addLike,
   removeLike,
   getComment,

@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const Dotenv = require("dotenv-webpack")
 
 module.exports = {
   entry: "/src/frontend/index.js",
@@ -47,8 +48,8 @@ module.exports = {
           {
             loader: "file-loader",
             options: {
-              outputPath: "assets/icon/",
-              publicPath: "assets/icon/",
+              outputPath: "assets/icons/",
+              publicPath: "assets/icons/",
             },
           },
         ],
@@ -56,6 +57,7 @@ module.exports = {
     ],
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: "./public/index.html",
       filename: "./index.html",
@@ -63,7 +65,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: "assets/style/[name].[contenthash].css",
     }),
-    new CleanWebpackPlugin(),
+    new Dotenv()
   ],
   optimization: {
     minimize: true,

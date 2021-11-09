@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 
 import {connect} from "react-redux"
-import config from "../../config"
 
 import trash from "../../utils/icons/trash.png";
 
-import "./style/ListaPost.css";
+import "./style/CommentList.css";
 
+import config from "../../../../config";
+const API_URL = config.api.url
 
 function CommentList(prop) {
   const {comments} = prop
@@ -39,7 +40,7 @@ function CommentList(prop) {
 
   const fetchDeleteComment= async (commentId, postId)=> {
     let error = false
-    await fetch(`${config.api.url}:${config.api.port}/api/post/${postId}/comment`, {
+    await fetch(`${API_URL}api/post/${postId}/comment`, {
       method: "DELETE",
       mode: "cors",
       headers: {
@@ -84,7 +85,7 @@ function CommentList(prop) {
                       handleDelComment(comentario.post, comentario._id, index)
                     }
                   >
-                    <img src={trash} alt="Delete icon" />
+                    <img src={API_URL + trash} alt="Delete icon" />
                   </button> : 
                   <></>
               }

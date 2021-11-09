@@ -1,0 +1,16 @@
+#app{
+  height: 100vh;
+  height: calc(var(--vh, 1vh)*100);
+}
+
+/* @media (max-height: 447px) and (min-width: 426px) {
+  #app{
+    height: 100%;  
+  }
+} */
+
+/* @media (max-height: 380px){
+  #app{
+    height: 100%;  
+  }
+} */

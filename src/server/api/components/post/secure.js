@@ -11,8 +11,11 @@ module.exports = function checkAuth(action){
       case "own_post":
         controller.list(req.params.id)
           .then((post)=>{
-            auth.check.own(req, post.user)
+            auth.check.own(req, post[0].user)
+            next()
           })
+          .catch(next)
+        break
       case "own_comment":
         controller.getComment(req.body.id)
           .then((comment) => {

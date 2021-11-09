@@ -1,17 +1,39 @@
-*{
+* {
   margin: 0;
   padding: 0;
 }
 
-ul{
+ul {
   list-style: none;
 }
 
-a{
+a {
   text-decoration: none;
   color: inherit;
 }
 
-button{
+button {
   cursor: pointer;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(220, 220, 220, 0.774);
+  border-radius: 5px;
+  opacity: 0;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(121, 119, 119);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+@media (max-width: 425px) {
+  ::-webkit-scrollbar {
+    width: 3px;
+  }
 }

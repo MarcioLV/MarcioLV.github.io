@@ -68,15 +68,15 @@ button{
   margin-left: 5px
 }
 
-.fotoModal-section-input input{
+/* .fotoModal-section-input input{
   margin-bottom: 8px;
-}
+} */
 
 .fotoModal-section-input_cargar,
 .fotoModal-section-input_eliminar{
   display: flex;
   align-items: center;
-  margin: 2px;
+  margin: 7px 0;
 }
 
 

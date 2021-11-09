@@ -1,12 +1,25 @@
+body{
+  overflow: hidden;
+}
+
 .wall{
   background-color: #18191a;
   color: #fff;
-  overflow-y: scroll;
-  height: 100vh;
+  
+  /* height: 100vh; */
+  height: inherit;
+
+  /* display: grid; */
+  /* grid-template-rows: 60px 1fr; */
 }
 
 .wall-center{
-  margin: 0 auto;
-  height: 100vh;
-  width: 500px;
+  height: 90%;
+  height: calc(100% - 60px);
+  /* grid-row: 2; */
+  overflow-y: auto;
+}
+
+.wall-header{
+  /* grid-row: 1; */
 }

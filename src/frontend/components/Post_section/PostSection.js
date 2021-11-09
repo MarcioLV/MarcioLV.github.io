@@ -3,9 +3,11 @@ import {connect} from 'react-redux'
 
 import ListaPost from "./ListaPost";
 import AgregarPost from "./AgregarPost";
-import config from "../../config";
 
 import "./style/PostSection.css";
+
+import config from "../../../../config";
+const API_URL = config.api.url
 
 class PostSection extends React.Component {
   constructor(props) {
@@ -14,10 +16,10 @@ class PostSection extends React.Component {
       post: this.props.post,
     };
     this.handleAddPost = this.handleAddPost.bind(this);
-    this.handleAddLike = this.handleAddLike.bind(this);
-    this.handleAddComment = this.handleAddComment.bind(this);
-    this.handleDeleteLike = this.handleDeleteLike.bind(this);
-    this.handleDeleteComment = this.handleDeleteComment.bind(this);
+    // this.handleAddLike = this.handleAddLike.bind(this);
+    // this.handleAddComment = this.handleAddComment.bind(this);
+    // this.handleDeleteLike = this.handleDeleteLike.bind(this);
+    // this.handleDeleteComment = this.handleDeleteComment.bind(this);
     this.handleDeletePost = this.handleDeletePost.bind(this);
   }
 
@@ -40,7 +42,7 @@ class PostSection extends React.Component {
 
   async fetchAddPost(data) {
     let error = false;
-    let datos = await fetch(`${config.api.url}:${config.api.port}/api/post`, {
+    let datos = await fetch(`${API_URL}api/post`, {
       method: "POST",
       mode: "cors",
       headers: {
@@ -62,74 +64,6 @@ class PostSection extends React.Component {
   async handleDeletePost(post){
     return await this.fetchDeletePost(post)
   }
-
-  async handleAddLike(postId) {
-    const likeUser = {
-      user: this.props.user.username,
-    };
-    await this.fetchAddData(likeUser, postId, "like");
-  }
-
-  async handleDeleteLike(postId) {
-    const likeUser = {
-      user: this.props.user.username,
-    };
-    await this.fetchDeleteLike(likeUser, postId, "like");
-  }
-
-  async handleAddComment(postId, comment) {
-    const commentPost = {
-      user: this.props.user.username,
-      comment: comment,
-    };
-    const newComment = await this.fetchAddData(commentPost, postId, "comment");
-    if(!newComment.error){
-      return newComment;
-    }else{
-      alert("sucedio un error")
-    }
-  }
-
-  async handleDeleteComment(postId, commentId) {
-    const commentUser = {
-      user: this.props.user.username,
-      id: commentId,
-    };
-    const error = await this.fetchDeleteLike(commentUser, postId, "comment");
-    return error;
-  }
-
-  async fetchDeletePost(id){
-    let error;
-    await fetch(`${config.api.url}:${config.api.port}/api/post/${id}`, {
-      method: "DELETE",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: this.props.user.token,
-      },
-    })
-      .then((response) => response.text())
-      .then((response) => JSON.parse(response))
-      .then((response) => error = response.error)
-      .catch((err) => {
-        error = true
-        console.error("[ERROR]", err)});
-    if(!error){
-      let post = this.state.post
-      let index
-      for(let i = 0; i<post.length; i++){
-        if(post[i]._id === id){
-          index = i
-          break
-        }
-      }
-      post.splice(index, 1)
-      this.setState({ post: [].concat(post) });
-    }else{
-      alert("Sucedio un error")
-    }
-  }
   
   async fetchAddData(data, id = "", modo = "") {
     let datos = {};
@@ -137,7 +71,7 @@ class PostSection extends React.Component {
     if (modo) {
       id += "/";
     }
-    await fetch(`${config.api.url}:${config.api.port}/api/post/${id}${modo}`, {
+    await fetch(`${API_URL}api/post/${id}${modo}`, {
       method: "POST",
       mode: "cors",
       headers: {
@@ -146,8 +80,8 @@ class PostSection extends React.Component {
       },
       body: JSON.stringify(data),
     })
-      .then((response) => response.text())
-      .then((response) => JSON.parse(response))
+      .then((response) => response.json())
+      // .then((response) => JSON.parse(response))
       .then((response) => (datos = response.body))
       .catch((err) => {
         console.error("[ERROR]", err)
@@ -157,48 +91,23 @@ class PostSection extends React.Component {
     return {...datos, error: error};
   }
 
-  async fetchDeleteLike(data, id, modo) {
-    let error;
-    await fetch(`${config.api.url}:${config.api.port}/api/post/${id}/${modo}`, {
-      method: "DELETE",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: this.props.user.token,
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.text())
-      .then((response) => JSON.parse(response))
-      .then((response) => (error = response.error))
-      .catch((err) => console.error("[ERROR]", err));
-
-    return error;
-  }
-
   render() {
-    let showStyle = !this.props.myPage
-    ? {display: "none"}
-    : {};
     return (
-      <>
-        <section className="agregar-post" style={showStyle}>
+      <div className="postSection">
+        {this.props.myPage && 
+        <section className="agregar-post">
           <AgregarPost
             handleAddPost={this.handleAddPost}
           />
-        </section>
+        </section>}
         <section className="ver-post">
           <ListaPost
             post={this.state.post}
             myPage={this.props.myPage}
-            handleAddLike={this.handleAddLike}
-            handleAddComment={this.handleAddComment}
-            handleDeleteLike={this.handleDeleteLike}
-            handleDeleteComment={this.handleDeleteComment}
             handleDeletePost={this.handleDeletePost}
           />
         </section>
-      </>
+      </div>
     );
   }
 }

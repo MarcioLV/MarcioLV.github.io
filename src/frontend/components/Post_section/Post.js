@@ -1,14 +1,17 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
-import config from "../../config";
 
 import CommentSection from "./CommentSection";
+import ViewImage from "../ViewImage";
 
-import user from "../../utils/icons/user.png";
+import userIcon from "../../utils/icons/user.png";
 
-import "./style/ListaPost.css";
+import "./style/Post.css";
+
+import config from "../../../../config";
+const API_URL = config.api.url
 
 function Post(prop) {
   const { post, handleDelPost, myPage, method } = prop;
@@ -26,12 +29,15 @@ function Post(prop) {
   const [like, setLike] = useState(likeColor);
   const [cantLike, setCantLike] = useState(post.likes.length);
   const [cantComment, setCantComment] = useState(post.comments.length);
+  const [isOpened, setIsOpened] = useState(false);
   //-----------------
-
+  let img = useRef(null);
+  let imgCon = useRef(null);
   //arregler fecha post
-  let date = post.date.slice(0, 10);
-  let time = post.date.slice(11, 16);
+  let date = post.date.slice(4, 15).split(" ");
+  let time = post.date.slice(16, 21);
   //-----------
+
   const handleDeleteStyle = () => {
     if (deleteStyle.visibility === "hidden") {
       return setDeleteStyle({});
@@ -47,23 +53,86 @@ function Post(prop) {
     if (!waitLike) {
       waitLike = true;
       if (like === "red") {
-        await method.handleDeleteLike(e.target.id);
+        const response = await fetchDeleteLike(post._id);
+        if (response.error) {
+          waitLike = false;
+          return alert("Hubo un Error");
+        }
         waitLike = false;
         setCantLike(cantLike - 1);
         return setLike("");
       }
-      await method.handleAddLike(e.target.id);
+      const response = await fetchAddLike(post._id);
+      if (response.error) {
+        waitLike = false;
+        return alert("Hubo un Error");
+      }
       setLike("red");
       setCantLike(cantLike + 1);
       waitLike = false;
     }
   };
+
+  const fetchAddLike = async (postId) => {
+    const likeUser = {
+      user: prop.user.username,
+    };
+    try {
+      let response = await fetch(
+        `${API_URL}api/post/${postId}/like`,
+        {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: prop.user.token,
+          },
+          body: JSON.stringify(likeUser),
+        }
+      );
+      response = response.json();
+      return response;
+    } catch (err) {
+      console.error("[error]", err);
+      let response = { error: true };
+      return response;
+    }
+  };
+
+  const fetchDeleteLike = async (postId) => {
+    const likeUser = {
+      user: prop.user.username,
+    };
+    try {
+      let response = await fetch(
+        `${API_URL}api/post/${postId}/like`,
+        {
+          method: "DELETE",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: prop.user.token,
+          },
+          body: JSON.stringify(likeUser),
+        }
+      );
+      response = response.json();
+      return response;
+    } catch (err) {
+      console.error("[error]", err);
+      let response = { error: true };
+      return response;
+    }
+  };
+
   const handleDelComment = () => {
     setCantComment(cantComment - 1);
   };
+
   const handleAddNewComment = () => {
     setCantComment(cantComment + 1);
-  }
+  };
+
   const handleCommentStyle = () => {
     if (commentStyle.display === "none") {
       return setCommentStyle({});
@@ -71,81 +140,86 @@ function Post(prop) {
     return setCommentStyle({ display: "none" });
   };
 
-  //imagen del post
-  let picture = "";
-  let imgStyle = { display: "none" };
-  if (post.picture) {
-    picture = post.picture;
-    imgStyle.display = "flex";
-  }
-  //-----------
+  const closeModal = () => {
+    setIsOpened(false);
+  };
 
-  //imagen de perfil
-  let i = useRef(null);
   const check = () => {
-    if (postUserImg == user) {
-      i.current.style.width = "35px";
-    } else {
-      let height = i.current.clientHeight;
-      let width = i.current.clientWidth;
-      const MAX_WIDTH = 50;
-      const MAX_HEIGHT = 50;
-      if (width > height) {
-        if (width > MAX_WIDTH) {
-          height *= MAX_WIDTH / width;
-          width = MAX_WIDTH;
-        }
+    const width = img.current.width;
+    const height = img.current.height;
+    const conWidth = imgCon.current.clientWidth;
+    if (width >= height) {
+      if (height <= conWidth) {
+        img.current.style.minHeight = conWidth + "px";
       } else {
-        if (height > MAX_HEIGHT) {
-          width *= MAX_HEIGHT / height;
-          height = MAX_HEIGHT;
-        }
+        img.current.style.maxHeight = conWidth + "px";
       }
-      i.current.style.height = height + "px";
-      i.current.style.width = width + "px";
+    } else {
+      if (width <= conWidth) {
+        img.current.style.minWidth = conWidth + "px";
+      } else {
+        img.current.style.maxWidth = conWidth + "px";
+      }
     }
   };
 
-  let postUserImg;
+  let style = "";
+  let postUserImg 
   if (post.user.avatar) {
     postUserImg = post.user.avatar;
   } else if (prop.userPage.avatar) {
     postUserImg = prop.userPage.avatar;
   } else {
-    postUserImg = user;
+    postUserImg = userIcon;
+    style = "_default";
   }
+
+  let picture = post.picture ? post.picture : ""
+
   let usuario = post.user.username ? post.user.username : post.user;
   let postUserId = post.user._id ? post.user._id : prop.userPage._id;
+  let myPost =
+    post.user._id === prop.user._id
+      ? true
+      : prop.user._id === prop.userPage._id
+      ? true
+      : false;
   return (
     <>
       <div className="post-contenedor">
         <div className="post-user">
           <div className="post-user-info-username">
-            <figure className="post-user-info-username-figure">
-              <img
-                src={postUserImg}
-                ref={i}
-                onLoad={check}
-                alt="user"
-                className="post-user-info-username-figure-img"
-              />
-            </figure>
+            <Link
+              to={{
+                pathname: "/perfil/" + postUserId,
+              }}
+            >
+              <figure className="post-user-info-username-figure" ref={imgCon}>
+                <img
+                  src={API_URL + postUserImg}
+                  alt="user"
+                  className={`post-user-info-username-figure-img${style}`}
+                  onLoad={postUserImg !== userIcon ? check : undefined}
+                  ref={img}
+                />
+              </figure>
+            </Link>
             <div className="post-user-info-username-figure-info">
               <h3>
                 <Link
                   to={{
-                    pathname: "/" + postUserId,
+                    pathname: "/perfil/" + postUserId,
                   }}
                 >
                   {usuario}
                 </Link>
               </h3>
               <small>
-                {date} {time}
+                {date[1] + " " + date[0]} {time}
               </small>
             </div>
           </div>
-          {post.user._id === prop.user._id || myPage ? (
+          {myPost && (
             <div className="post-user-button">
               <button onClick={handleDeleteStyle}>...</button>
               <div
@@ -156,17 +230,22 @@ function Post(prop) {
                 Eliminar Post
               </div>
             </div>
-          ) : (
-            <></>
           )}
         </div>
-        <div className="post-text">{post.text}</div>
-        <figure className="post-picture" style={imgStyle}>
-          <img src={picture} style={imgStyle} />
-        </figure>
+        {post.text && <div className="post-text">{post.text}</div>}
+        {picture && (
+          <figure className="post-picture">
+            <img src={API_URL + picture} onClick={() => setIsOpened(true)}/>
+          </figure>
+        )}
+        <ViewImage
+          onClose={() => closeModal()}
+          isOpened={isOpened}
+          image={picture}
+        />
         <div className="post-like">
           <button
-            id={post._id}
+            // id={post._id}
             onClick={(e) => handleAddLike(e)}
             style={{ color: like }}
           >
@@ -178,7 +257,11 @@ function Post(prop) {
           </button>
         </div>
         <section className="post-comment_section" style={commentStyle}>
-          <CommentSection post={post} handleDelComment={handleDelComment} handleAddNewComment={handleAddNewComment} />
+          <CommentSection
+            post={post}
+            handleDelComment={handleDelComment}
+            handleAddNewComment={handleAddNewComment}
+          />
         </section>
       </div>
     </>

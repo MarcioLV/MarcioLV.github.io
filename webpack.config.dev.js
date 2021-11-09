@@ -1,12 +1,14 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const Dotenv = require("dotenv-webpack")
 
 module.exports = {
   entry: "/src/frontend/index.js",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "[name].[contenthash].js",
+    publicPath: "/"
   },
   resolve: {
     extensions: [".js"],
@@ -63,5 +65,6 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: "assets/[name].[contenthash].css",
     }),
+    new Dotenv()
   ],
 };

@@ -1,9 +1,11 @@
 import React, {useState} from "react";
 import ReactDOM from 'react-dom'
 
-import config from '../config'
-
 import RegistroModal from "./RegistroModal";
+
+import config from "../../../config";
+const API_URL = config.api.url
+
 
 function Registro(props) {
   const [taken, setTaken] = useState(false)
@@ -33,7 +35,7 @@ function Registro(props) {
   const fetchUser = async (user) => {
     try{
       let response = await fetch(
-        `${config.api.url}:${config.api.port}/api/user`,
+        `${API_URL}api/user`,
         {
           method: "POST",
           mode: "cors",

@@ -1,0 +1,54 @@
+.post-comment_section-input {
+  width: 100%;
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.post-comment_section-input-container {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.post-comment_section-input-container,
+.post-comment_section-input-container button {
+  border-radius: 18px;
+}
+
+.post-comment_section-input-container,
+.post-comment_section-input-container textarea,
+.post-comment_section-input-container button {
+  background-color: #3a3b3c;
+  
+  border: none;
+}
+
+.post-comment_section-input-container textarea {
+  outline: none;
+  resize: none;
+  height: 20px;
+  font-size: 16px;
+  max-height: 200px;
+  width: 100%;
+  padding: 0 12px;
+  margin: 5px 0;
+  color: #fff;
+}
+
+.post-comment_section-input-container button {
+  width: 100px;
+  color: #fff;
+  height: 30px;
+  font-size: 14px;
+  border-top-right-radius: 0;
+  align-self: flex-end;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.post-comment_section-input-container button:hover {
+  background-color: #3386f2;
+}

@@ -3,14 +3,12 @@ import React, {useState, useEffect} from "react";
 import "./style/login.css";
 import LoginBox from "../components/LoginBox";
 
-import config from "../config";
+import config from "../../../config";
+const API_URL = config.api.url
+console.log(API_URL);
 
 function Login(props) {
   const [errLog, setErrLog] = useState(false)
-
-  // useEffect(()=>{
-  //   handleSubmit("marcio", "marcio")
-  // },[])
 
   const handleSubmit = (user, pass) => {
     const data = {
@@ -23,7 +21,7 @@ function Login(props) {
   const fetchLogin = async (data) => {
     try {
       let response = await fetch(
-        `${config.api.url}:${config.api.port}/api/auth/login`,
+        `${API_URL}api/auth/login`,
         {
           method: "POST",
           mode: "cors",
@@ -44,9 +42,10 @@ function Login(props) {
       console.error("[ERROR]" + err);
     }
   };
+  
   return (
     <div className="login">
-      <div className="login-conteiner">
+      <div className="login-container">
         <div className="login-page-name">
           <h1>RedSocial</h1>
           <h3>

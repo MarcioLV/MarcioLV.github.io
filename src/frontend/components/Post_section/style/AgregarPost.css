@@ -1,4 +1,4 @@
-.addPost{
+.addPost {
   /* height: inherit; */
   display: flex;
   flex-direction: column;
@@ -6,24 +6,24 @@
   padding: 10px;
 }
 
-.addPost-perfil{
+.addPost-perfil {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.addPost-user h4{
+.addPost-user h4 {
   font-size: 20px;
   letter-spacing: 2px;
   margin-left: 10px;
 }
 
-.addPost-user{
+.addPost-user a{
   display: flex;
   align-items: center;
 }
 
-.addPost-user-figure{
+.addPost-user-figure {
   height: 45px;
   width: 45px;
   border-radius: 50%;
@@ -31,53 +31,72 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: antiquewhite;
 }
 
-.addPost-user-figure{
-  background-color:antiquewhite;
+.addPost-user-figure a {
+  width: inherit;
+  height: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.addPost-imagen{
-  padding:5px 12px 0 12px;
-  border-radius: 20px;;
-  display:flex;
-  justify-content:center;
+.addPost-user-figure-img_default {
+  width: 37px;
+}
+
+.addPost-imagen {
+  padding: 5px 12px 0 12px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
   align-items: center;
   border: 2px solid black;
   cursor: pointer;
   background-color: rgb(175, 174, 174);
 }
 
-.addPost-imagen:hover{
+.addPost-imagen:hover {
   background-color: cornflowerblue;
 }
 
-.addPost-imagen label{
+.addPost-imagen label {
   cursor: pointer;
 }
 
-.addPost-imagen img{
+.addPost-imagen img {
   border-radius: 3px;
 }
 
-.addPost-imagen input{
+.addPost-imagen input {
   display: none;
 }
 
-.addPost-input-imagen{
+.addPost-input-imagen {
   width: 100%;
   margin-bottom: 10px;
 
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.addPost-input{
+
+.addPost-input-imagen_closeIcon{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 25px;
+  cursor: pointer;
+}
+
+.addPost-input {
   width: 100%;
   padding: 10px 0;
 }
 
-.addPost-input-container{
+.addPost-input-container {
   width: 100%;
   overflow: hidden;
   display: flex;
@@ -85,46 +104,42 @@
   margin-bottom: 10px;
   background-color: #3a3b3c;
   color: #fff;
-
 }
 .addPost-input-container,
-.addPost-input-container button{
+.addPost-input-container button {
   border-radius: 18px;
 }
 
 .addPost-input-container,
 .addPost-input-container textarea,
-.addPost-input-container button{
+.addPost-input-container button {
   font-size: 16px;
   border: none;
 }
 
-.addPost-input-container textarea{
+.addPost-input-container textarea {
   outline: none;
   resize: none;
   height: 20px;
   max-height: 200px;
   width: 100%;
   padding: 0 12px;
-  margin: 5px 0;
+  margin: 9px 0;
   background-color: #3a3b3c;
   color: #fff;
 }
 
-.addPost-input button{
+.addPost-input button {
   width: 100%;
   color: #fff;
   background-color: #3386f2;
-  padding: 10px
+  padding: 10px;
 }
-.addPost-input button:hover{
+.addPost-input button:hover {
   background-color: #5691df;
 }
 
-.addPost-input-imagen img{
+.addPost-input-imagen img {
   max-width: 450px;
   max-height: 60vh;
 }
-
-
-

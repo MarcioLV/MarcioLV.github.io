@@ -1,19 +1,22 @@
-import React from "react";
+import React, { useRef } from "react";
 
 import { connect } from "react-redux";
 import { setUserPage } from "../actions";
 
 import Loading from "../components/Loading";
-import Header from "../components/Header";
+import Error from "../components/Error";
 import PostSection from "../components/Post_section/PostSection";
 import EditModal from "../components/EditModal";
 import FotoModal from "../components/FotoModal";
+import ViewImage from "../components/ViewImage";
 
-import config from "../config";
 
 import userImg from "../utils/icons/user.png";
 import changeImg from "../utils/icons/camara.png";
+
 import "./style/Perfil.css";
+import config from "../../../config";
+const API_URL = config.api.url
 
 class Perfil extends React.Component {
   constructor(props) {
@@ -26,12 +29,27 @@ class Perfil extends React.Component {
       userPageId: this.props.data.match.params.userId,
       isOpened: false,
       isOpenedImg: false,
+      isOpenedView: false,
     };
+    this.check = this.check.bind(this);
     this.openModal = this.openModal.bind(this);
     this.openModalImg = this.openModalImg.bind(this);
+    this.openViewImage = this.openViewImage.bind(this);
   }
+
   componentDidMount() {
     this.fetchPost();
+  }
+
+  componentDidUpdate(props) {
+    if (
+      this.props.data.match.params.userId !== props.data.match.params.userId
+    ) {
+      this.setState(
+        { userPageId: this.props.data.match.params.userId, myPage: true },
+        () => this.fetchPost()
+      );
+    }
   }
 
   openModal() {
@@ -42,10 +60,18 @@ class Perfil extends React.Component {
     this.setState({ isOpenedImg: true });
   }
 
+  openViewImage() {
+    this.setState({ isOpenedView: true });
+  }
+
   closeModal() {
     this.setState({ isOpened: false, isOpenedImg: false });
     this.fetchPost();
   }
+
+  closeViewImage = () => {
+    this.setState({ isOpenedView: false });
+  };
 
   async fetchPost() {
     this.setState({ loading: true });
@@ -58,12 +84,14 @@ class Perfil extends React.Component {
         Authorization: this.props.user.token,
       },
     };
-    await fetch(`${config.api.url}:${config.api.port}/api/user/${userId}`, options)
-      .then((response) => response.text())
-      .then((response) => JSON.parse(response))
+    await fetch(
+      `${API_URL}api/user/${userId}`,
+      options
+    )
+      .then((response) => response.json())
       .then((response) => {
         if (!response.error) {
-          response = response.body
+          response = response.body;
           this.props.setUserPage({
             userPage: {
               username: response.username,
@@ -88,56 +116,63 @@ class Perfil extends React.Component {
         this.setState({ error: true, loading: false });
       });
   }
-  //   try {
-  //     let response = await fetch(
-  //       `${config.api.url}:${config.api.port}/user/${userId}`,
-  //       options
-  //     );
-  //     response = await response.text();
-  //     response = await JSON.parse(response);
-  //     response = response.body;
-  //     this.props.setUserPage({
-  //       userPage: {
-  //         username: response.username,
-  //         avatar: response.avatar,
-  //         _id: userId,
-  //       },
-  //     });
-  //     if (this.props.user._id !== this.props.userPage._id) {
-  //       this.setState({ myPage: false });
-  //     }
-  //     console.log("perfil-response");
-  //     this.setState({
-  //       post: response.posts,
-  //       loading: false,
-  //     });
-  //   } catch (err) {
-  //     console.log(error);
-  //     console.error("[error]", err.message)
-  //     this.setState({error: true, loading: false});
-  //   }
-  // }
+
+  check = () => {
+    const img = document.getElementById("img-perfil");
+    const imgCon = document.getElementById("imgCon-perfil");
+    // console.log(img.width);
+    const width = img.width;
+    const height = img.height;
+    const conWidth = imgCon.clientWidth;
+    if (width >= height) {
+      if (height <= conWidth) {
+        img.style.minHeight = conWidth + "px";
+      } else {
+        img.style.maxHeight = conWidth + "px";
+      }
+    } else {
+      if (width <= conWidth) {
+        img.style.minWidth = conWidth + "px";
+      } else {
+        img.style.maxWidth = conWidth + "px";
+      }
+    }
+  };
+
   render() {
     if (this.state.loading) {
       return <Loading />;
     }
     if (this.state.error) {
-      return "error";
+      return <Error/>;
     }
 
     let userImg2 = this.props.userPage.avatar
       ? this.props.userPage.avatar
       : userImg;
-
+    
     return (
       <div className="perfil">
+        <ViewImage
+          onClose={() => this.closeViewImage()}
+          isOpened={this.state.isOpenedView}
+          image={userImg2}
+        />
         <div className="perfil-view">
-          <Header handleLogout={this.props.handleLogout} />
           <section className="perfil-user-contenedor">
             <div className="perfil-user perfil-contenedor">
               <div className="perfil-user-imagen">
-                <div className="perfil-user-imagen-avatar">
-                  <img src={userImg2} alt="user-imagen" />
+                <div className="perfil-user-imagen-avatar" id="imgCon-perfil">
+                  <img
+                    src={API_URL + userImg2}
+                    alt="user-imagen"
+                    onClick={this.openViewImage}
+                    onLoad={
+                      userImg2 !== userImg ? () => this.check() : undefined
+                    }
+                    
+                    id="img-perfil"
+                  />
                 </div>
                 {this.state.myPage ? (
                   <div
@@ -147,7 +182,7 @@ class Perfil extends React.Component {
                       className="perfil-user-imagen-change_contenedor"
                       onClick={this.openModalImg}
                     >
-                      <img src={changeImg} alt="" />
+                      <img src={API_URL + changeImg} alt="" />
                     </div>
                     <FotoModal
                       onClose={() => this.closeModal()}

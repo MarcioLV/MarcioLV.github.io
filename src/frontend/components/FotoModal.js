@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import ReactDOM from "react-dom";
 
-import config from "../config";
+import { connect } from "react-redux";
+import { setUser } from "../actions";
 
 import userImg from "../utils/icons/user.png";
 
 import "./style/FotoModal.css";
+
+import config from "../../../config";
+const API_URL = config.api.url
 
 function FotoModal(props) {
   if (!props.isOpened) {
@@ -17,6 +21,9 @@ function FotoModal(props) {
   //lo que mando
   const [imagen, setImagen] = useState();
   const [locked, setLocked] = useState(false);
+
+  let img = useRef(null);
+  let imgCon = useRef(null);
 
   const closeModal = () => {
     props.onClose();
@@ -32,8 +39,8 @@ function FotoModal(props) {
       reader.onload = function (f) {
         image.src = f.target.result;
         image.onload = async function () {
-          const MAX_WIDTH = 210;
-          const MAX_HEIGHT = 210;
+          const MAX_WIDTH = 300;
+          const MAX_HEIGHT = 300;
           let width = image.width;
           let height = image.height;
           if (width > height) {
@@ -88,39 +95,67 @@ function FotoModal(props) {
     }
     let formdata = new FormData();
     formdata.append("avatar", avatar);
-    const status = await fetchUserAvatar(props.userId, formdata);
-    if (status === 500) {
+    const response = await fetchUserAvatar(props.userId, formdata);
+    console.log(response);
+    if (response.error) {
       alert("Ocurrio un error");
     } else {
+      props.setUser({ user: { ...props.user, avatar: response.body.avatar } });
       closeModal();
     }
   };
 
   const fetchUserAvatar = async (user, info) => {
     try {
-      const request = await fetch(
-        `${config.api.url}:${config.api.port}/api/user/${user}`,
+      let response = await fetch(
+        `${API_URL}api/user/${user}`,
         {
           method: "POST",
+          headers: {
+            Authorization: props.user.token,
+          },
           mode: "cors",
           body: info,
         }
       );
+      response = response.json();
+      return response;
     } catch (err) {
       alert("Hubo un error");
       console.error("[error]", err);
     }
   };
 
+  const check = (avatar) => {
+    const width = img.current.width;
+    const height = img.current.height;
+    const conWidth = imgCon.current.clientWidth;
+    if(avatar === API_URL + userImg){
+      img.current.style.minWidth = "0"
+      img.current.style.minHeight = "0"
+    }else{
+    if (width >= height) {
+      if (height <= conWidth) {
+        img.current.style.minHeight = conWidth + "px";
+      } else {
+        img.current.style.maxHeight = conWidth + "px";
+      }
+    } else {
+      if (width <= conWidth) {
+        img.current.style.minWidth = conWidth + "px";
+      } else {
+        img.current.style.maxWidth = conWidth + "px";
+      }
+    }}
+  };
+
   let avatar;
-  let style;
   if (locked) {
-    avatar = userImg;
+    avatar = API_URL + userImg;
   } else if (!file) {
-    avatar = props.userAvatar;
+    avatar = API_URL + props.userAvatar;
   } else {
     avatar = file.src;
-    style = { width: file.width, height: file.height };
   }
 
   return ReactDOM.createPortal(
@@ -135,8 +170,13 @@ function FotoModal(props) {
           </button>
         </div>
         <div className="fotoModal-user-imagen">
-          <div className="fotoModal-user-imagen-avatar">
-            <img src={avatar} alt="user-imagen" style={style} />
+          <div className="fotoModal-user-imagen-avatar" ref={imgCon}>
+            <img
+              src={avatar}
+              alt="user-imagen"
+              ref={img}
+              onLoad={()=>check(avatar)}
+            />
           </div>
         </div>
         <div className="fotoModal-section-input">
@@ -145,10 +185,13 @@ function FotoModal(props) {
               type="radio"
               name="img"
               value="cargar"
+              id="cargar-img"
               onChange={(e) => handleAddFoto(e)}
               defaultChecked
             />
-            <h4>Cargar nueva foto de perfil</h4>
+            <label htmlFor="cargar-img">
+              <h4>Cargar nueva foto de perfil</h4>
+            </label>
           </div>
           <input
             type="file"
@@ -162,9 +205,12 @@ function FotoModal(props) {
               type="radio"
               name="img"
               value="eliminar"
+              id="delete-img"
               onChange={(e) => handleAddFoto(e)}
             />
-            <h4>Eliminar foto de perfil</h4>
+            <label htmlFor="delete-img">
+              <h4>Eliminar foto de perfil</h4>
+            </label>
           </div>
         </div>
         <div className="fotoModal-button">
@@ -180,5 +226,13 @@ function FotoModal(props) {
     document.getElementById("modal-root")
   );
 }
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  };
+};
+const mapDispatchToProps = {
+  setUser,
+};
 
-export default FotoModal;
+export default connect(mapStateToProps, mapDispatchToProps)(FotoModal);

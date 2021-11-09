@@ -26,6 +26,18 @@ button{
   flex-direction: column;
   /* align-items: center; */
 }
+
+.editModal-conteiner small{
+  align-self: center;
+  color: red;
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  visibility: hidden;
+  padding-top: 10px;
+  padding-bottom: 15px
+}
+
 .editModal-header{
   display: flex;
   justify-content: space-between;
@@ -47,7 +59,7 @@ button{
 .editModal-inputs_contraseña{
   display: flex;
   flex-direction: column;
-  padding: 15px 0;
+  padding-top: 15px
 }
 
 .editModal-inputs input,

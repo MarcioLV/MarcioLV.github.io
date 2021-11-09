@@ -2,8 +2,12 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
-import user from "../../utils/icons/user.png";
+import config from "../../../../config";
+const API_URL = config.api.url;
+
+import userIcon from "../../utils/icons/user.png";
 import loadPic from "../../utils/icons/picture1.png";
+import closeIcon from "../../utils/icons/closeWhiteIcon.png";
 
 import "./style/AgregarPost.css";
 
@@ -16,6 +20,9 @@ function AgregarPost(prop) {
   const [imagen, setImagen] = useState();
 
   let h = useRef(null);
+  let img = useRef(null);
+  let imgCon = useRef(null);
+  let imgInput = useRef(null);
 
   useEffect(() => {
     if (h.current) {
@@ -84,68 +91,61 @@ function AgregarPost(prop) {
     setFile(null);
   };
 
-  // const handleAddText = (e) => {
-  //   setPost(e.target.value);
-  // };
+  const closeImage = () => {
+    if (imgInput.current) {
+      imgInput.current.value = "";
+    }
+    setImagen(null);
+    setFile(null);
+  };
 
-  let userImg = prop.user.avatar ? prop.user.avatar : user;
-
-  let i = useRef(null);
   const check = () => {
-    if (userImg == user) {
-      i.current.style.width = "35px";
-    } else {
-      let height = i.current.clientHeight;
-      let width = i.current.clientWidth;
-      const MAX_WIDTH = 50;
-      const MAX_HEIGHT = 50;
-      if (width > height) {
-        if (width > MAX_WIDTH) {
-          height *= MAX_WIDTH / width;
-          width = MAX_WIDTH;
-        }
+    const width = img.current.width;
+    const height = img.current.height;
+    const conWidth = imgCon.current.clientWidth;
+    if (width >= height) {
+      if (height <= conWidth) {
+        img.current.style.minHeight = conWidth + "px";
       } else {
-        if (height > MAX_HEIGHT) {
-          width *= MAX_HEIGHT / height;
-          height = MAX_HEIGHT;
-        }
+        img.current.style.maxHeight = conWidth + "px";
       }
-      i.current.style.height = height + "px";
-      i.current.style.width = width + "px";
+    } else {
+      if (width <= conWidth) {
+        img.current.style.minWidth = conWidth + "px";
+      } else {
+        img.current.style.maxWidth = conWidth + "px";
+      }
     }
   };
+
+  let avatar = prop.user.avatar ? prop.user.avatar : userIcon;
+
   return (
     <div className="addPost">
       <div className="addPost-perfil">
         <div className="addPost-user">
-          <figure className="addPost-user-figure">
-            <Link
-              to={{
-                pathname: "/" + prop.user._id,
-              }}
-            >
+          <Link
+            to={{
+              pathname: "/perfil/" + prop.user._id,
+            }}
+          >
+            <figure className="addPost-user-figure" ref={imgCon}>
               <img
-                ref={i}
-                src={userImg}
+                ref={img}
+                src={API_URL + avatar}
                 alt=""
-                className="addPost-user-figure-img"
-                onLoad={check}
+                className={`addPost-user-figure-img${
+                  !prop.user.avatar ? "_default" : ""
+                }`}
+                onLoad={prop.user.avatar ? check : undefined}
               />
-            </Link>
-          </figure>
-          <h4>
-            <Link
-              to={{
-                pathname: "/" + prop.user._id,
-              }}
-            >
-              {prop.user.username}
-            </Link>
-          </h4>
+            </figure>
+            <h4>{prop.user.username}</h4>
+          </Link>
         </div>
         <div className="addPost-imagen">
           <label htmlFor="img-file">
-            <img src={loadPic} />
+            <img src={API_URL + loadPic} />
           </label>
           <input
             type="file"
@@ -167,11 +167,20 @@ function AgregarPost(prop) {
             }}
           />
         </div>
-        {file && <figure
-          className="addPost-input-imagen"
-        >
-          <img src={file.src}/>
-        </figure>}
+        {file && (
+          <>
+            <figure className="addPost-input-imagen">
+              <img
+                src={closeIcon}
+                className="addPost-input-imagen_closeIcon"
+                alt=""
+                onClick={closeImage}
+                ref={imgInput}
+              />
+              <img src={file.src} />
+            </figure>
+          </>
+        )}
         <button onClick={handleSubmit}>Agregar</button>
       </div>
     </div>

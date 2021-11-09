@@ -3,12 +3,26 @@ import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { setUser } from "../actions";
 
-import config from "../config";
+
 
 import NotFound from "./NotFound";
 import Login from "../pages/login";
 import Main from "../pages/Main";
 import Perfil from "../pages/Perfil";
+import SearchPage from "../pages/SearchPage";
+import Header from "./Header";
+
+import "./style/App.css";
+
+import config from "../../../config";
+const API_URL = config.api.url
+
+let vh = window.innerHeight * 0.01;
+document.documentElement.style.setProperty("--vh", `${vh}px`);
+window.addEventListener("resize", () => {
+  vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty("--vh", `${vh}px`);
+});
 
 class App extends React.Component {
   constructor(props) {
@@ -19,6 +33,7 @@ class App extends React.Component {
         username: null,
         token: null,
       },
+      reloadMain: false,
     };
     this.handleLogin = this.handleLogin.bind(this);
   }
@@ -45,16 +60,15 @@ class App extends React.Component {
   handleLogin = async (user) => {
     const options = {
       headers: {
-        Authorization: user.token,
+        Authorization: "Bearer " + user.token,
       },
     };
     try {
       let response = await fetch(
-        `${config.api.url}:${config.api.port}/api/user/${user._id}`,
+        `${API_URL}api/user/${user._id}`,
         options
       );
-      response = await response.text();
-      response = await JSON.parse(response);
+      response = await response.json();
       if (!response.error) {
         sessionStorage.setItem("token", user.token);
         sessionStorage.setItem("userId", user._id);
@@ -69,10 +83,14 @@ class App extends React.Component {
         this.setState({
           is_logged: true,
         });
+      }else{
+        console.log(response);
       }
     } catch (err) {
       console.error("[ERROR]" + err);
-      // this.handleLogout()
+      setTimeout(()=>{
+        this.tryLogin()
+      },[1000])
     }
   };
 
@@ -84,20 +102,46 @@ class App extends React.Component {
     });
   }
 
+  handleHome() {
+    this.setState({ reloadMain: !this.state.reloadMain });
+  }
+
   main() {
     return this.state.is_logged ? (
-      <Main handleLogout={() => this.handleLogout()} />
+      <>
+        <Header
+          handleLogout={() => this.handleLogout()}
+          handleHome={() => this.handleHome()}
+        />
+        <Main reload={this.state.reloadMain} />
+      </>
     ) : (
       <Redirect to="/login" />
     );
   }
 
   perfil(e) {
-    if(this.state.is_logged){
-      return <Perfil data={e} handleLogout={() => this.handleLogout()} />
+    if (this.state.is_logged) {
+      return (
+        <>
+          <Header handleLogout={() => this.handleLogout()} />
+          <Perfil data={e} />
+        </>
+      );
+    } else {
+      return <Redirect to="/login" />;
     }
-    else{
-      return <Redirect to="/login" />
+  }
+  search(e) {
+    if (this.state.is_logged) {
+      return (
+        <>
+          <Header handleLogout={() => this.handleLogout()} />
+          <SearchPage data={e}/>
+        </>
+      );
+    } else {
+      return <Redirect to="/login" />;
     }
   }
   notFound() {
@@ -120,7 +164,8 @@ class App extends React.Component {
               )
             }
           />
-          <Route exact path="/:userId" render={(e) => this.perfil(e)} />
+          <Route exact path="/search/:search" render={(e) => this.search(e)} />
+          <Route exact path="/perfil/:userId" render={(e) => this.perfil(e)} />
           <Route render={() => this.notFound()} />
         </Switch>
       </BrowserRouter>
@@ -128,7 +173,6 @@ class App extends React.Component {
   }
 }
 
-// export default App;
 const mapDispatchToProps = {
   setUser,
 };

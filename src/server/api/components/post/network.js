@@ -20,14 +20,14 @@ const upload = multer({
   storage: storage,
 });
 
-router.get("/", /*auth("log"),*/ list);
-router.get("/:id", /*auth("log"),*/ list);
-router.post("/", /*auth("add"),*/ upload.single("picture"), upsert);
-router.delete("/:id", /*auth("own_post"),*/ del);
-router.post("/:id/like", /*auth("add"),*/ like);
-router.delete("/:id/like", /*auth("log"),*/ dislike);
-router.post("/:id/comment", /*auth("add"),*/ comment);
-router.delete("/:id/comment", /*auth("own_comment"),*/ delComment);
+router.get("/", auth("log"), list);
+router.get("/:id", auth("log"), list);
+router.post("/", auth("add"), upload.single("picture"), upsert);
+router.delete("/:id", auth("own_post"), del);
+router.post("/:id/like", auth("add"), like);
+router.delete("/:id/like", auth("log"), dislike);
+router.post("/:id/comment", auth("add"), comment);
+router.delete("/:id/comment", auth("own_comment"), delComment);
 
 function list(req, res, next) {
   controller

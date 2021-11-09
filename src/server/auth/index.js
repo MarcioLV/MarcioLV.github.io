@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const config = require('../config')
+const config = require('../../../config')
 const secret = config.jwt.secret
 const error = require('../utils/error')
 
@@ -8,18 +8,19 @@ function sign(data){
 }
 
 function verify(token){
-  return jwt.verify(token, secret)
+ return jwt.verify(token, secret)
 }
 
 const check = {
   own: function(req, owner){
     const decoded = decodedHeader(req)
-    if(decoded.username !== owner){
+    if(decoded._id !== owner._id){
       throw error("No puedes hacer esto[auth]", 401)
     }
   },
   logged: function(req){
     const decoded = decodedHeader(req)
+    
   }
 }
 

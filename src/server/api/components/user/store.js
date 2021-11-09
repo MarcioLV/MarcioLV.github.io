@@ -4,13 +4,19 @@ const { Post, Comment, Like } = require("../post/model");
 
 const fs = require("fs").promises;
 
-async function getUserList() {
-  const listName = await User.find();
+async function getUserList(q) {
+  // const find = /q.username./i
+  const find1 = new RegExp(`${q.username}.`, "i")
+  const find2 = new RegExp(`${q.username}`, "i")
+
+  const listName = await User.find({username: {$in: [find1, find2] }}, { username: 1, avatar: 1 })
+    // .where("username")
+    // .lt(find);
   return listName;
 }
 
-async function verifyUser(user){
-  return User.findOne({username: user.username})
+async function verifyUser(user) {
+  return User.findOne({ username: user.username });
 }
 
 async function getUser(user) {
@@ -57,5 +63,5 @@ module.exports = {
   add: addUser,
   edit: editUser,
   addAvatar,
-  verifyUser
+  verifyUser,
 };
