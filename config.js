@@ -9,6 +9,6 @@ module.exports = {
     dbUrl: process.env.DB_URL,
   },
   jwt:{
-    secret: process.env.JWT_SECRET 
+    secret: process.env.JWT_SECRET || "noSecret"
   }
 }
