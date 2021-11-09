@@ -29,6 +29,7 @@ function Post(prop) {
   const [like, setLike] = useState(likeColor);
   const [cantLike, setCantLike] = useState(post.likes.length);
   const [cantComment, setCantComment] = useState(post.comments.length);
+  const [postDelete, setPostDelete] = useState({})
   const [isOpened, setIsOpened] = useState(false);
   //-----------------
   let img = useRef(null);
@@ -45,10 +46,7 @@ function Post(prop) {
     return setDeleteStyle({ visibility: "hidden" });
   };
 
-  const handleDelePost = (postId) => {
-    handleDelPost(postId);
-  };
-
+  
   const handleAddLike = async (e) => {
     if (!waitLike) {
       waitLike = true;
@@ -73,6 +71,15 @@ function Post(prop) {
     }
   };
 
+  const handleDelePost = async (postId) => {
+    const response = await fetchDelPost(postId);
+    if(response.error){
+      console.error("[error]", response.body);
+      return alert("Hubo un Error");
+    }
+    setPostDelete({display: "none"})
+  };
+
   const fetchAddLike = async (postId) => {
     const likeUser = {
       user: prop.user.username,
@@ -91,6 +98,27 @@ function Post(prop) {
         }
       );
       response = response.json();
+      return response;
+    } catch (err) {
+      let response = { error: true, body: err };
+      return response;
+    }
+  };
+
+  const fetchDelPost = async (postId) => {
+    try {
+      let response = await fetch(
+        `${API_URL}api/post/${postId}`,
+        {
+          method: "DELETE",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: prop.user.token,
+          },
+        }
+      );
+      response = await response.json();
       return response;
     } catch (err) {
       console.error("[error]", err);
@@ -116,7 +144,7 @@ function Post(prop) {
           body: JSON.stringify(likeUser),
         }
       );
-      response = response.json();
+      response = await response.json();
       return response;
     } catch (err) {
       console.error("[error]", err);
@@ -184,9 +212,10 @@ function Post(prop) {
       : prop.user._id === prop.userPage._id
       ? true
       : false;
+
   return (
     <>
-      <div className="post-contenedor">
+      <div className="post-contenedor" style={postDelete}>
         <div className="post-user">
           <div className="post-user-info-username">
             <Link

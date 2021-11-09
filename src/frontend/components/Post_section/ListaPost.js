@@ -10,10 +10,6 @@ function ListaPost(prop) {
   if (post.length === 0) {
     return <div className="noHayPost">No hay post</div>;
   }
-  const handleDelPost = async (id) => {
-    await handleDeletePost(id);
-  };
-
   return (
     <>
       {post.map((element) => {
@@ -22,7 +18,6 @@ function ListaPost(prop) {
             <Post
               post={element}
               myPage={myPage}
-              handleDelPost={handleDelPost}
               method={method}
             />
           </div>

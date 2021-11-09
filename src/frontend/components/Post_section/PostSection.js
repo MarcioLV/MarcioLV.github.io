@@ -16,7 +16,6 @@ class PostSection extends React.Component {
       post: this.props.post,
     };
     this.handleAddPost = this.handleAddPost.bind(this);
-    this.handleDeletePost = this.handleDeletePost.bind(this);
   }
 
   async handleAddPost(text, picture) {
@@ -57,10 +56,6 @@ class PostSection extends React.Component {
     return {...datos, error: error}
   }
   
-  async handleDeletePost(post){
-    return await this.fetchDeletePost(post)
-  }
-  
   async fetchAddData(data, id = "", modo = "") {
     let datos = {};
     let error = false
@@ -99,7 +94,6 @@ class PostSection extends React.Component {
           <ListaPost
             post={this.state.post}
             myPage={this.props.myPage}
-            handleDeletePost={this.handleDeletePost}
           />
         </section>
       </div>
