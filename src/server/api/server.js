@@ -27,7 +27,7 @@ db(config.store.dbUrl);
 app.use(express.static(path.join(__dirname, "../public/dist")));
 app.use(express.static(path.join(__dirname, "../public")));
 
-
+const port = process.env.PORT || config.api.port
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/dist/index.html"), (err) => {
