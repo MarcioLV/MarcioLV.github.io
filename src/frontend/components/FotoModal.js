@@ -75,15 +75,6 @@ function FotoModal(props) {
     }
   };
 
-  const handleAddFoto = (e) => {
-    const { value } = e.target;
-    if (value === "cargar") {
-      setLocked(false);
-    } else {
-      setLocked(true);
-    }
-  };
-
   const handleSubmit = async () => {
     let avatar;
     if (!locked) {
@@ -179,33 +170,26 @@ function FotoModal(props) {
           </div>
         </div>
         <div className="fotoModal-section-input">
-          <div className="fotoModal-section-input_cargar">
-            <input
-              type="radio"
-              name="img"
-              value="cargar"
-              id="cargar-img"
-              onChange={(e) => handleAddFoto(e)}
-              defaultChecked
-            />
-            <label htmlFor="cargar-img">
-              <h4>Cargar nueva foto de perfil</h4>
-            </label>
-          </div>
           <input
             type="file"
             accept="image/*"
             id="archivo"
             disabled={locked}
+            style={{ display: "none" }}
             onChange={(e) => change(e)}
           />
+          <button className={`filebutton ${locked && "filebutton-locked"}`}>
+            <label htmlFor="archivo" className="label">
+              Elegir foto
+            </label>
+          </button>
           <div className="fotoModal-section-input_eliminar">
             <input
-              type="radio"
+              type="checkbox"
               name="img"
               value="eliminar"
               id="delete-img"
-              onChange={(e) => handleAddFoto(e)}
+              onChange={() => setLocked(!locked)}
             />
             <label htmlFor="delete-img">
               <h4>Eliminar foto de perfil</h4>

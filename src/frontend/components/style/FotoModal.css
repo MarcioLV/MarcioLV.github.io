@@ -61,9 +61,12 @@ button {
 
 .fotoModal-section-input {
   padding-bottom: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 .fotoModal-section-input h4 {
+  font-size: 16px;
   margin-left: 5px;
 }
 
@@ -71,7 +74,26 @@ button {
 .fotoModal-section-input_eliminar {
   display: flex;
   align-items: center;
-  margin: 7px 0;
+  padding: 8px 0;
+}
+
+.filebutton{
+  padding: 10px;
+  font-size: 16px;
+  width: fit-content;
+  margin: 0 auto;
+  background: lightblue;
+  font-weight: bold;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+.filebutton label{
+  cursor: pointer;
+}
+
+.filebutton-locked{
+  background-color: rgb(190, 187, 187);
 }
 
 .fotoModal-button {
