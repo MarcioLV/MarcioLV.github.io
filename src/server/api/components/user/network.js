@@ -21,8 +21,8 @@ const upload = multer({
   storage: storage,
 });
 
-router.get("/", /*auth("log"),*/ list);
-router.get("/:user", /*auth("log"),*/ get);
+router.get("/", auth("log"), list);
+router.get("/:user", auth("log"), get);
 router.post("/", upsert);
 router.put("/:user", auth("log"), edit);
 router.post("/:user", auth("log"), upload.single("avatar"), addAvatar);

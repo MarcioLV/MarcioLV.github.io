@@ -1,7 +1,6 @@
 .searchUser_user-container{
   display: flex;
   align-items: center;
-  /* border: 1px solid red; */
   color: #fff;
   margin: 3px 0;
   padding:10px;
@@ -24,14 +23,6 @@
   align-items: center;
   background-color: antiquewhite;
 }
-
-/* .searchUser_user-figure a {
-  width: inherit;
-  height: inherit;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} */
 
 .searchUser_user-figure-img_default {
   width: 37px;

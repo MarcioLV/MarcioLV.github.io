@@ -214,8 +214,8 @@ function Post(prop) {
       : false;
 
   return (
-    <>
-      <div className="post-contenedor" style={postDelete}>
+    <div className="post" style={postDelete}>
+      <div className="post-contenedor" >
         <div className="post-user">
           <div className="post-user-info-username">
             <Link
@@ -292,7 +292,7 @@ function Post(prop) {
           />
         </section>
       </div>
-    </>
+    </div>
   );
 }
 

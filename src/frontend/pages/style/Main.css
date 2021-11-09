@@ -6,20 +6,11 @@ body{
   background-color: #18191a;
   color: #fff;
   
-  /* height: 100vh; */
   height: inherit;
-
-  /* display: grid; */
-  /* grid-template-rows: 60px 1fr; */
 }
 
 .wall-center{
   height: 90%;
   height: calc(100% - 60px);
-  /* grid-row: 2; */
   overflow-y: auto;
-}
-
-.wall-header{
-  /* grid-row: 1; */
 }

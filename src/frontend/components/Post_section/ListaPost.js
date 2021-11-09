@@ -14,13 +14,13 @@ function ListaPost(prop) {
     <>
       {post.map((element) => {
         return (
-          <div key={element._id} className="post">
+          <React.Fragment key={element._id}>
             <Post
               post={element}
               myPage={myPage}
               method={method}
             />
-          </div>
+          </React.Fragment>
         );
       })}
     </>

@@ -5,7 +5,6 @@
 
 .perfil{
   width: 100%;
-  /* height: inherit; */
   height: 91%;
   height: calc(100% - 60px);
   overflow: auto;
@@ -16,23 +15,12 @@
   background-attachment: fixed;
   color: #fff;
 }
-/* .perfil-header{
-  grid-row: 1;
-} */
 
 .perfil-view{
-  /* grid-row: 2; */
   display: flex;
   flex-direction: column;
   align-items: center;
   padding:10px 0;
-  /* height: 90%; */
-
-  /* overflow-y: auto; */
-  /* background: linear-gradient(#3386f2, 30%, #18191a);
-  background-size: cover;
-  background-attachment: fixed;
-  color: #fff; */
 }
 
 .perfil-user-contenedor{

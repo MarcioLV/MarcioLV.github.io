@@ -30,11 +30,9 @@
 
 @media (max-width: 320px) {
   .error-msj h1{
-    /* margin-bottom: 10px; */
     font-size: 20vw;
   }
   .error-msj h2{
-    /* width: fit-content; */
     font-size: 10vw;
   }
 }

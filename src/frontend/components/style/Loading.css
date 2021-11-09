@@ -10,7 +10,6 @@
 .preloader{
   width: 70px;
   height: 70px;
-  /* border: 10px solid red; */
   border: 10px solid rgb(143, 143, 143);
   border-radius: 50%;
   border-top: 10px solid rgb(238, 234, 234);

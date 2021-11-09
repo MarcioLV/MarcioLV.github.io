@@ -39,7 +39,7 @@ const SearchPage = (prop) => {
         `${API_URL}api/user?user=${search}`,
         {
           headers: {
-            Authorization: "Bearer " + prop.user.token,
+            Authorization: prop.user.token,
           },
         }
       );

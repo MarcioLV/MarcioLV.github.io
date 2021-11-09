@@ -24,7 +24,6 @@ button{
   padding: 15px; 
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
 }
 
 .editModal-conteiner small{
@@ -64,7 +63,6 @@ button{
 
 .editModal-inputs input,
 .editModal-inputs button{
-  /* height: 45px; */
   margin-bottom: 15px;
   padding: 10px;
 }
@@ -92,7 +90,6 @@ button{
 }
 
 .editModal-button{
-  /* margin: 0 auto; */
   margin-bottom: 15px;
   display: flex;
   justify-content: space-between;

@@ -1,13 +1,12 @@
-.header{
+.header {
   width: 100%;
   height: 60px;
   display: flex;
   justify-content: center;
-  background-color:#242526;
-  /* position: fixed */
+  background-color: #242526;
 }
 
-.header-contenedor{
+.header-contenedor {
   height: 100%;
   width: 100%;
   max-width: 1000px;
@@ -20,24 +19,23 @@
 .left-side,
 .right-side,
 .home,
-.logOut{
+.logOut {
   height: inherit;
 }
 
 .left-side,
-.logOut{
+.logOut {
   margin: 0 10px;
 }
 
-.center{
+.center {
   width: fit-content;
-  position:absolute;
-  /* left: 35%; */
+  position: absolute;
   right: 35%;
 }
 
 .closeSesionButton,
-.inicioButton{
+.inicioButton {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -47,16 +45,16 @@
   background-color: #838282;
 }
 .closeSesionButton img,
-.inicioButton img{
+.inicioButton img {
   width: 30px;
 }
 
-.right-side{
+.right-side {
   display: flex;
   align-items: center;
 }
 
-.header-perfil a{
+.header-perfil a {
   display: flex;
   align-items: center;
 }
@@ -65,7 +63,7 @@
   font-size: 20px;
   letter-spacing: 2px;
   margin-right: 5px;
-  color: #fff
+  color: #fff;
 }
 
 .header-perfil-figure {
@@ -79,39 +77,30 @@
   background-color: antiquewhite;
 }
 
-/* .header-perfil-figure a {
-  width: inherit;
-  height: inherit;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} */
-
 .header-perfil-figure-img_default {
   width: 37px;
 }
 
 .closeSesionButton:hover,
-.inicioButton:hover{
-  background-color:darkgray;
+.inicioButton:hover {
+  background-color: darkgray;
 }
 
 @media (max-width: 750px) {
-  .center{
-    position:absolute;
+  .center {
+    position: absolute;
     left: 60px;
-    /* right: 35%; */
   }
 }
 
-@media (max-width: 550px){
-  .center{
+@media (max-width: 550px) {
+  .center {
     width: 40vw;
   }
 }
 
-@media (max-width: 500px){
-  .header-perfil h4{
+@media (max-width: 500px) {
+  .header-perfil h4 {
     display: none;
   }
 }

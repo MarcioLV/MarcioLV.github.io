@@ -11,23 +11,11 @@
   display: flex;
   align-items: center;
   width: 100%;
-  /* border: 1px solid grey; */
   background: #3a3b3c;
   height: 34px;
   border-radius: 17px;
   overflow: hidden;
-
-  /* margin: 5px 0; */
 }
-
-/* .searchMore{
-  height: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-} */
-
 
 .search-input img{
   width: 20px;
@@ -53,15 +41,6 @@
   justify-content: center;
   align-items: center;
 }
-/* 
-.search-input_delete{
-  visibility: hidden;
-  background: rgb(214, 110, 110);
-} */
-
-/* .search-input_delete:hover{
-  background: crimson;
-} */
 
 .search-input_search:hover{
   background: darkgray;

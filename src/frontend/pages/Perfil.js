@@ -175,7 +175,7 @@ class Perfil extends React.Component {
                 </div>
                 {this.state.myPage ? (
                   <div
-                    className="perfil-user-imagen-change" /*style={showStyle}*/
+                    className="perfil-user-imagen-change"
                   >
                     <div
                       className="perfil-user-imagen-change_contenedor"
