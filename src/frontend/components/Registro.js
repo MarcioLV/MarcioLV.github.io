@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 
 import RegistroModal from "./RegistroModal";
 
-import config from "../../../config";
+import config from "../config";
 const API_URL = config.api.url
 
 

@@ -6,7 +6,7 @@ import AgregarPost from "./AgregarPost";
 
 import "./style/PostSection.css";
 
-import config from "../../../../config";
+import config from "../../config";
 const API_URL = config.api.url
 
 class PostSection extends React.Component {
@@ -16,10 +16,6 @@ class PostSection extends React.Component {
       post: this.props.post,
     };
     this.handleAddPost = this.handleAddPost.bind(this);
-    // this.handleAddLike = this.handleAddLike.bind(this);
-    // this.handleAddComment = this.handleAddComment.bind(this);
-    // this.handleDeleteLike = this.handleDeleteLike.bind(this);
-    // this.handleDeleteComment = this.handleDeleteComment.bind(this);
     this.handleDeletePost = this.handleDeletePost.bind(this);
   }
 
@@ -81,7 +77,6 @@ class PostSection extends React.Component {
       body: JSON.stringify(data),
     })
       .then((response) => response.json())
-      // .then((response) => JSON.parse(response))
       .then((response) => (datos = response.body))
       .catch((err) => {
         console.error("[ERROR]", err)

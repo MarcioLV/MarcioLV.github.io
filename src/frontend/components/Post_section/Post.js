@@ -10,7 +10,7 @@ import userIcon from "../../utils/icons/user.png";
 
 import "./style/Post.css";
 
-import config from "../../../../config";
+import config from "../../config";
 const API_URL = config.api.url
 
 function Post(prop) {
@@ -33,7 +33,7 @@ function Post(prop) {
   //-----------------
   let img = useRef(null);
   let imgCon = useRef(null);
-  //arregler fecha post
+  //fecha post
   let date = post.date.slice(4, 15).split(" ");
   let time = post.date.slice(16, 21);
   //-----------
@@ -245,7 +245,6 @@ function Post(prop) {
         />
         <div className="post-like">
           <button
-            // id={post._id}
             onClick={(e) => handleAddLike(e)}
             style={{ color: like }}
           >

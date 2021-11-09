@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 
 import closeIcon from "../utils/icons/closeWhiteIcon.png";
 import "./style/viewImage.css";
-import config from '../../../config'
+import config from "../config"
 const API_URL = config.api.url
 
 function ViewImage(props) {

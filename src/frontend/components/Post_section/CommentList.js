@@ -6,12 +6,11 @@ import trash from "../../utils/icons/trash.png";
 
 import "./style/CommentList.css";
 
-import config from "../../../../config";
+import config from "../../config";
 const API_URL = config.api.url
 
 function CommentList(prop) {
   const {comments} = prop
-  // const [comments, setComments ] = useState(prop.comments)
   const [limit, setLimit] = useState(2);
   const [masComment, setMasComment] = useState("visible");
 

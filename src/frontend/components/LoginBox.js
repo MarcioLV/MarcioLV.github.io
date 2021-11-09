@@ -11,7 +11,7 @@ function LoginBox(props) {
   const [password, setPassword] = useState("");
   const [dataInc, setDataInc] = useState(false)
 
-  //modal
+  //modal---
   const [isOpened, setOpened] = useState(false);
   const openModal = () => {
     setOpened(true);
@@ -19,7 +19,7 @@ function LoginBox(props) {
   const closeModal = () => {
     setOpened(false);
   };
-  //
+  //----
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!username || !password) {

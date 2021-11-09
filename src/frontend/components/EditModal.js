@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import { setUser } from "../actions";
 
-import config from "../../../config";
+import config from "../config";
 const API_URL = config.api.url
 
 import "./style/EditModal.css";
@@ -39,7 +39,6 @@ function EditModal(props) {
   const handleSubmit = async () => {
     if (!data.username) {
       return setError({error: true, text: "Agregar un nombre de usuario"})
-      // return alert("No viene Username");
     }
     if (!locked) {
       if (!data.password || !data.password2 || !data.password3) {

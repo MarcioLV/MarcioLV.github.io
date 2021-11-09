@@ -8,7 +8,7 @@ import Search from "./Search";
 import logOutIcon from "../utils/icons/logout-icon.png";
 import homeIcon from "../utils/icons/home-icon.png";
 import user from "../utils/icons/user.png";
-import config from "../../../config"
+import config from "../config"
 const API_URL = config.api.url
 
 import "./style/Header.css";
@@ -100,5 +100,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, null)(Header);
-
-// export default Header;

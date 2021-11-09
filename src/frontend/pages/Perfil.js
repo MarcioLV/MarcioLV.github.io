@@ -15,7 +15,7 @@ import userImg from "../utils/icons/user.png";
 import changeImg from "../utils/icons/camara.png";
 
 import "./style/Perfil.css";
-import config from "../../../config";
+import config from "../config";
 const API_URL = config.api.url
 
 class Perfil extends React.Component {
@@ -120,7 +120,6 @@ class Perfil extends React.Component {
   check = () => {
     const img = document.getElementById("img-perfil");
     const imgCon = document.getElementById("imgCon-perfil");
-    // console.log(img.width);
     const width = img.width;
     const height = img.height;
     const conWidth = imgCon.clientWidth;
@@ -156,7 +155,7 @@ class Perfil extends React.Component {
         <ViewImage
           onClose={() => this.closeViewImage()}
           isOpened={this.state.isOpenedView}
-          image={userImg2}
+          image={API_URL + userImg2}
         />
         <div className="perfil-view">
           <section className="perfil-user-contenedor">

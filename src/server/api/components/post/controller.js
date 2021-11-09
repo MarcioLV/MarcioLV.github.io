@@ -1,8 +1,6 @@
-// const { nanoid } = require("nanoid");
 const moment = require('moment-timezone')
 const store = require("./store");
 const error = require("../../../utils/error");
-const config = require("../../../../../config");
 
 function createDate (){
   let date = new Date()
@@ -56,14 +54,6 @@ async function getComment(comment_id){
   return comment
 }
 
-// async function getLike(like_id){
-//   const likeId = {
-//     _id: like_id
-//   }
-//   const like = await store.getLike(likeId)
-//   return like
-// }
-
 async function addLike(post, user) {
   const like = {
     post: post,
@@ -102,7 +92,6 @@ module.exports = {
   list,
   addPost,
   deletePost,
-  // getLike,
   addLike,
   removeLike,
   getComment,

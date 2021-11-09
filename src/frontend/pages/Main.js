@@ -9,7 +9,7 @@ import PostSection from "../components/Post_section/PostSection";
 import Loading from "../components/Loading";
 import Error from "../components/Error";
 
-import config from "../../../config";
+import config from "../config";
 const API_URL = config.api.url
 
 class Main extends React.Component {

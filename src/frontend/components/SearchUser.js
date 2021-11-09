@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 
 import userIcon from "../utils/icons/user.png";
 
-import config from "../../../config";
+import config from "../config";
 const API_URL = config.api.url
 
 import "./style/SearchUser.css";

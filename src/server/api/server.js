@@ -11,9 +11,6 @@ require("dotenv").config()
 
 const app = express();
 
-console.log("e: " + process.env.DB_URL)
-console.log("c: " + config.store.dbUrl)
-
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

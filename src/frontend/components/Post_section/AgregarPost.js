@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
-import config from "../../../../config";
+import config from "../../config";
 const API_URL = config.api.url;
 
 import userIcon from "../../utils/icons/user.png";

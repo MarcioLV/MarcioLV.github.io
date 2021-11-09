@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 
 import "./style/SearchPage.css";
 
-import config from "../../../config";
+import config from "../config"
 const API_URL = config.api.url
 
 const SearchPage = (prop) => {

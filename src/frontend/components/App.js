@@ -14,7 +14,7 @@ import Header from "./Header";
 
 import "./style/App.css";
 
-import config from "../../../config";
+import config from "../config";
 const API_URL = config.api.url
 
 let vh = window.innerHeight * 0.01;
@@ -83,8 +83,6 @@ class App extends React.Component {
         this.setState({
           is_logged: true,
         });
-      }else{
-        console.log(response);
       }
     } catch (err) {
       console.error("[ERROR]" + err);

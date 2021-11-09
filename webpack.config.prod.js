@@ -57,6 +57,7 @@ module.exports = {
     ],
   },
   plugins: [
+    new Dotenv(),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: "./public/index.html",
@@ -65,7 +66,6 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: "assets/style/[name].[contenthash].css",
     }),
-    new Dotenv()
   ],
   optimization: {
     minimize: true,

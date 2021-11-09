@@ -1,14 +1,13 @@
-import React, {useState, useEffect} from "react";
+import React, { useState } from "react";
 
 import "./style/login.css";
 import LoginBox from "../components/LoginBox";
 
-import config from "../../../config";
-const API_URL = config.api.url
-console.log(API_URL);
+import config from "../config";
+const API_URL = config.api.url;
 
 function Login(props) {
-  const [errLog, setErrLog] = useState(false)
+  const [errLog, setErrLog] = useState(false);
 
   const handleSubmit = (user, pass) => {
     const data = {
@@ -20,17 +19,14 @@ function Login(props) {
 
   const fetchLogin = async (data) => {
     try {
-      let response = await fetch(
-        `${API_URL}api/auth/login`,
-        {
-          method: "POST",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      let response = await fetch(`${API_URL}api/auth/login`, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
       response = await response.json();
       if (response.status === 400) {
         setErrLog(true);
@@ -38,11 +34,11 @@ function Login(props) {
         props.onLogin(response.body);
       }
     } catch (err) {
-      alert("Hubo un error")
+      alert("Hubo un error");
       console.error("[ERROR]" + err);
     }
   };
-  
+
   return (
     <div className="login">
       <div className="login-container">
@@ -53,7 +49,11 @@ function Login(props) {
           </h3>
         </div>
         <div className="login-page-input">
-          <LoginBox handleSubmit={handleSubmit} errLog={errLog} setErrLog={setErrLog}/>
+          <LoginBox
+            handleSubmit={handleSubmit}
+            errLog={errLog}
+            setErrLog={setErrLog}
+          />
         </div>
       </div>
     </div>

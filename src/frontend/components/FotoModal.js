@@ -8,7 +8,7 @@ import userImg from "../utils/icons/user.png";
 
 import "./style/FotoModal.css";
 
-import config from "../../../config";
+import config from "../config";
 const API_URL = config.api.url
 
 function FotoModal(props) {
@@ -96,7 +96,6 @@ function FotoModal(props) {
     let formdata = new FormData();
     formdata.append("avatar", avatar);
     const response = await fetchUserAvatar(props.userId, formdata);
-    console.log(response);
     if (response.error) {
       alert("Ocurrio un error");
     } else {
