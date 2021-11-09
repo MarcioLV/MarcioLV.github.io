@@ -35,11 +35,11 @@ app.get("*", (req, res) => {
   });
 });
 
-app.listen(config.api.port, (err) => {
+app.listen(port, (err) => {
   if (err) {
     console.error("Error", err);
   } else {
-    console.log("Servidor escuchando en el puerto " + config.api.port);
+    console.log("Servidor escuchando en el puerto " + port);
   }
 });
 
