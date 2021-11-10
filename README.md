@@ -1,6 +1,6 @@
 
 # RedSocial
-Una red social con múltiples características construido con  NodeJs/ExpressJs/ReactJs/MongoDB
+Una red social con múltiples características construido con  NodeJS/ExpressJS/ReactJS/MongoDB
 
 ## Características
 - Crear un post con imagen
@@ -16,17 +16,13 @@ Una red social con múltiples características construido con  NodeJs/ExpressJs/
 
 
 ## Prerequisitos
-Base de datos en MongoDB
+Base de datos MongoDB
 Tener instalado
 - Node JS
 
 ## Instalación
 1. Clonar el repositorio
-1. En la raiz del proyecto completar el archivo .env con
- - API_URL, 	dejar en blanco si es local
- - DB_URL, url de conexión con la base de datos MongoDB
-1. En src/frontend/config.js
- - Completar con API_URL
+1. En la raiz del proyecto crear y completar el archivo .env usando .env.example de referencia
 1. Ejectuar los comandos
        npm install
        npm run build
