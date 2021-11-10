@@ -24,6 +24,7 @@ Tener instalado
 1. Clonar el repositorio
 1. En la raiz del proyecto crear y completar el archivo .env usando .env.example de referencia
 1. Ejectuar los comandos
+
        npm install
        npm run build
        npm run start
