@@ -11,8 +11,8 @@ Una red social con múltiples características construido con  NodeJS/ExpressJS/
 - Borrar posts
 - Buscar usuarios y ver su página de perfil
 - Página de Perfil
- - Cambiar nombre de usuario y contraseña
- - Cambiar foto de perfil
+  - Cambiar nombre de usuario y contraseña
+  - Cambiar foto de perfil
 
 
 ## Prerequisitos
