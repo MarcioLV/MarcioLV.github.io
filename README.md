@@ -15,7 +15,7 @@ Una red social con múltiples características construido con  NodeJS/ExpressJS/
   - Cambiar foto de perfil
 
 
-## Prerequisitos
+## Prerrequisitos
 Base de datos MongoDB
 Tener instalado
 - Node JS
