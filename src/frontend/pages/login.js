@@ -2,9 +2,7 @@ import React, { useState } from "react";
 
 import "./style/login.css";
 import LoginBox from "../components/LoginBox";
-
-import config from "../config";
-const API_URL = config.api.url;
+import { fetchLogin } from "../utils/fetch";
 
 function Login(props) {
   const [errLog, setErrLog] = useState(false);
@@ -14,28 +12,15 @@ function Login(props) {
       username: user,
       password: pass,
     };
-    fetchLogin(data);
+    tryLogin(data);
   };
 
-  const fetchLogin = async (data) => {
-    try {
-      let response = await fetch(`${API_URL}api/auth/login`, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      response = await response.json();
-      if (response.status === 400) {
-        setErrLog(true);
-      } else {
-        props.onLogin(response.body);
-      }
-    } catch (err) {
-      alert("Hubo un error");
-      console.error("[ERROR]" + err);
+  const tryLogin = async (data) => {
+    const response = await fetchLogin(data);
+    if (response.status === 400) {
+      setErrLog(true);
+    } else {
+      props.onLogin(response.body);
     }
   };
 

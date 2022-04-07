@@ -5,6 +5,8 @@ import { setUserPage } from "../actions";
 
 import "./style/Main.css";
 
+import {fetchPost} from '../utils/fetch'
+
 import PostSection from "../components/Post_section/PostSection";
 import Loading from "../components/Loading";
 import Error from "../components/Error";
@@ -23,16 +25,18 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchPost();
+    this.setState({ loading: true, error: false });
+    this.tryFetchPost();
   }
 
   componentDidUpdate({reload}){
     if(reload !== this.props.reload){
-      this.fetchPost()
+      this.setState({ loading: true, error: false });
+      this.tryFetchPost()
     }
   }
 
-  fetchPost() {
+  async tryFetchPost() {
     this.props.setUserPage({
       userPage: {
         username: null,
@@ -40,22 +44,17 @@ class Main extends React.Component {
         _id: null,
       },
     });
-    this.setState({ loading: true, error: false });
     const options = {
       headers: {
         Authorization: this.props.user.token,
       },
     };
-    fetch(`${API_URL}api/post`, options)
-      .then((response) => response.json())
-      .then((response) =>
-        this.setState({ post: response.body, loading: false, error: false })
-      )
-      .catch((err) => {
-        console.error("[error]", err.message)
-        this.setState({loading: false, error: true})
-
-      });
+    let response = await fetchPost(options)
+    if(!response.error){
+      this.setState({ post: response.body, loading: false, error: false })
+    }else{
+      this.setState({loading: false, error: true})
+    }
   }
 
   render() {
