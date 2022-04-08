@@ -1,12 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { connect } from "react-redux";
 
-
 import CommentList from "./CommentList";
 import "./style/CommentSection.css";
 
-import config from "../../config";
-const API_URL = config.api.url
+import {fetchAddComment} from '../../utils/fetch'
 
 function CommentSection(props) {
   const { post, handleDelComment, handleAddNewComment } = props;
@@ -26,10 +24,10 @@ function CommentSection(props) {
   };
 
   const handleAddComment = async () => {
-    if(!comment){
-      return
+    if (!comment) {
+      return;
     }
-    const postId = post._id;
+    // const postId = post._id;
     const newComment = {
       user: {
         username: props.user.username,
@@ -37,10 +35,16 @@ function CommentSection(props) {
       },
       text: comment,
     };
+    const options = {
+      postId: post._id,
+      newComment: newComment,
+      token: props.user.token
+    }
     setComment("");
-    const response = await fetchAddComment(postId, newComment);
+    const response = await fetchAddComment(options);
+    // const response = await fetchAddComment(postId, newComment);
     if (!response.error || !response.body.error) {
-      newComment.post = postId;
+      newComment.post = options.postId;
       newComment._id = response.body._id;
       setPostComment([].concat(postComment, newComment));
       h.current.style.height = textareaheight + "px";
@@ -48,31 +52,6 @@ function CommentSection(props) {
     } else {
       alert("sucedio un error");
     }
-  };
-
-  const fetchAddComment = async (postId, data) => {
-    let error = false;
-    let datos = {};
-    await fetch(
-      `${API_URL}api/post/${postId}/comment`,
-      {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: props.user.token,
-        },
-        body: JSON.stringify(data),
-      }
-    )
-      .then((response) => response.json())
-      .then((response) => (datos = response))
-      .catch((err) => {
-        console.error("[ERROR]", err);
-        error = true;
-      });
-
-    return { ...datos, error };
   };
 
   const handleDeleteComment = (index) => {

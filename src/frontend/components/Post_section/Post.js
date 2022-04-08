@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
+import { fetchDeleteLike, fetchAddLike, fetchDelPost } from "../../utils/fetch";
 
 import CommentSection from "./CommentSection";
 import ViewImage from "../ViewImage";
@@ -11,7 +12,7 @@ import userIcon from "../../utils/icons/user.png";
 import "./style/Post.css";
 
 import config from "../../config";
-const API_URL = config.api.url
+const API_URL = config.api.url;
 
 function Post(prop) {
   const { post, handleDelPost, myPage, method } = prop;
@@ -29,7 +30,7 @@ function Post(prop) {
   const [like, setLike] = useState(likeColor);
   const [cantLike, setCantLike] = useState(post.likes.length);
   const [cantComment, setCantComment] = useState(post.comments.length);
-  const [postDelete, setPostDelete] = useState({})
+  const [postDelete, setPostDelete] = useState({});
   const [isOpened, setIsOpened] = useState(false);
   //-----------------
   let img = useRef(null);
@@ -46,110 +47,37 @@ function Post(prop) {
     return setDeleteStyle({ visibility: "hidden" });
   };
 
-  
   const handleAddLike = async (e) => {
     if (!waitLike) {
       waitLike = true;
+      let options = {
+        postId: post._id,
+        user: prop.user.username,
+        token: prop.user.token,
+      };
       if (like === "red") {
-        const response = await fetchDeleteLike(post._id);
-        if (response.error) {
-          waitLike = false;
-          return alert("Hubo un Error");
+        const response = await fetchDeleteLike(options);
+        waitLike = false;
+        if (!response.error) {
+          setCantLike(cantLike - 1);
+          return setLike("");
         }
+      } else {
+        const response = await fetchAddLike(options);
         waitLike = false;
-        setCantLike(cantLike - 1);
-        return setLike("");
+        if (!response.error) {
+          setLike("red");
+          setCantLike(cantLike + 1);
+        }
       }
-      const response = await fetchAddLike(post._id);
-      if (response.error) {
-        waitLike = false;
-        return alert("Hubo un Error");
-      }
-      setLike("red");
-      setCantLike(cantLike + 1);
-      waitLike = false;
     }
   };
 
   const handleDelePost = async (postId) => {
-    const response = await fetchDelPost(postId);
-    if(response.error){
-      console.error("[error]", response.body);
-      return alert("Hubo un Error");
-    }
-    setPostDelete({display: "none"})
-  };
-
-  const fetchAddLike = async (postId) => {
-    const likeUser = {
-      user: prop.user.username,
-    };
-    try {
-      let response = await fetch(
-        `${API_URL}api/post/${postId}/like`,
-        {
-          method: "POST",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: prop.user.token,
-          },
-          body: JSON.stringify(likeUser),
-        }
-      );
-      response = response.json();
-      return response;
-    } catch (err) {
-      let response = { error: true, body: err };
-      return response;
-    }
-  };
-
-  const fetchDelPost = async (postId) => {
-    try {
-      let response = await fetch(
-        `${API_URL}api/post/${postId}`,
-        {
-          method: "DELETE",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: prop.user.token,
-          },
-        }
-      );
-      response = await response.json();
-      return response;
-    } catch (err) {
-      console.error("[error]", err);
-      let response = { error: true };
-      return response;
-    }
-  };
-
-  const fetchDeleteLike = async (postId) => {
-    const likeUser = {
-      user: prop.user.username,
-    };
-    try {
-      let response = await fetch(
-        `${API_URL}api/post/${postId}/like`,
-        {
-          method: "DELETE",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: prop.user.token,
-          },
-          body: JSON.stringify(likeUser),
-        }
-      );
-      response = await response.json();
-      return response;
-    } catch (err) {
-      console.error("[error]", err);
-      let response = { error: true };
-      return response;
+    const options = {postId: postId, token: prop.user.token}
+    const response = await fetchDelPost(options);
+    if (!response.error) {
+      setPostDelete({ display: "none" });
     }
   };
 
@@ -192,17 +120,17 @@ function Post(prop) {
   };
 
   let style = "";
-  let postUserImg 
+  let postUserImg;
   if (post.user.avatar) {
-    postUserImg = post.user.avatar;
+    postUserImg = API_URL + post.user.avatar;
   } else if (prop.userPage.avatar) {
-    postUserImg = prop.userPage.avatar;
+    postUserImg = API_URL + prop.userPage.avatar;
   } else {
     postUserImg = userIcon;
     style = "_default";
   }
 
-  let picture = post.picture ? post.picture : ""
+  let picture = post.picture ? API_URL + post.picture : "";
 
   let usuario = post.user.username ? post.user.username : post.user;
   let postUserId = post.user._id ? post.user._id : prop.userPage._id;
@@ -215,7 +143,7 @@ function Post(prop) {
 
   return (
     <div className="post" style={postDelete}>
-      <div className="post-contenedor" >
+      <div className="post-contenedor">
         <div className="post-user">
           <div className="post-user-info-username">
             <Link
@@ -225,7 +153,7 @@ function Post(prop) {
             >
               <figure className="post-user-info-username-figure" ref={imgCon}>
                 <img
-                  src={API_URL + postUserImg}
+                  src={postUserImg}
                   alt="user"
                   className={`post-user-info-username-figure-img${style}`}
                   onLoad={postUserImg !== userIcon ? check : undefined}
@@ -264,7 +192,7 @@ function Post(prop) {
         {post.text && <div className="post-text">{post.text}</div>}
         {picture && (
           <figure className="post-picture">
-            <img src={API_URL + picture} onClick={() => setIsOpened(true)}/>
+            <img src={picture} onClick={() => setIsOpened(true)} />
           </figure>
         )}
         <ViewImage
@@ -273,10 +201,7 @@ function Post(prop) {
           image={picture}
         />
         <div className="post-like">
-          <button
-            onClick={(e) => handleAddLike(e)}
-            style={{ color: like }}
-          >
+          <button onClick={(e) => handleAddLike(e)} style={{ color: like }}>
             Me Gusta
             <small style={{ color: "white" }}> | {cantLike} | </small>
           </button>

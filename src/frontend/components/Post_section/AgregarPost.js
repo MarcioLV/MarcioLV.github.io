@@ -118,7 +118,7 @@ function AgregarPost(prop) {
     }
   };
 
-  let avatar = prop.user.avatar ? prop.user.avatar : userIcon;
+  let avatar = prop.user.avatar ? API_URL + prop.user.avatar : userIcon;
 
   return (
     <div className="addPost">
@@ -132,7 +132,7 @@ function AgregarPost(prop) {
             <figure className="addPost-user-figure" ref={imgCon}>
               <img
                 ref={img}
-                src={API_URL + avatar}
+                src={avatar}
                 alt=""
                 className={`addPost-user-figure-img${
                   !prop.user.avatar ? "_default" : ""
@@ -145,7 +145,7 @@ function AgregarPost(prop) {
         </div>
         <div className="addPost-imagen">
           <label htmlFor="img-file">
-            <img src={API_URL + loadPic} />
+            <img src={loadPic} />
           </label>
           <input
             type="file"

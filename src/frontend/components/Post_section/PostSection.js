@@ -1,15 +1,12 @@
 import React from "react";
-import {connect} from 'react-redux'
+import { connect } from "react-redux";
 
-import ListaPost from "./ListaPost";
+import Post from './Post'
 import AgregarPost from "./AgregarPost";
 
-import {fetchAddPost} from '../../utils/fetch'
+import { fetchAddPost } from "../../utils/fetch";
 
 import "./style/PostSection.css";
-
-import config from "../../config";
-const API_URL = config.api.url
 
 class PostSection extends React.Component {
   constructor(props) {
@@ -21,61 +18,39 @@ class PostSection extends React.Component {
   }
 
   async handleAddPost(text, picture) {
-    let formdata = new FormData()
-    formdata.append("picture", picture)
-    formdata.append("user", this.props.user._id)
-    formdata.append("text", text)
+    let formdata = new FormData();
+    formdata.append("picture", picture);
+    formdata.append("user", this.props.user._id);
+    formdata.append("text", text);
 
     let newPost = await fetchAddPost(formdata, this.props.user.token);
-    if(!newPost.error){
+    if (!newPost.error) {
       newPost.body.user = {
         username: this.props.user.username,
         avatar: this.props.user.avatar,
-        _id: this.props.user._id
-      }
+        _id: this.props.user._id,
+      };
       this.setState({ post: [].concat(this.state.post, newPost.body) });
     }
   }
-  
-  // async fetchAddData(data, id = "", modo = "") {
-  //   let datos = {};
-  //   let error = false
-  //   if (modo) {
-  //     id += "/";
-  //   }
-  //   await fetch(`${API_URL}api/post/${id}${modo}`, {
-  //     method: "POST",
-  //     mode: "cors",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: this.props.user.token,
-  //     },
-  //     body: JSON.stringify(data),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((response) => (datos = response.body))
-  //     .catch((err) => {
-  //       console.error("[ERROR]", err)
-  //       error = true
-  //     });
-
-  //   return {...datos, error: error};
-  // }
 
   render() {
     return (
       <div className="postSection">
-        {this.props.myPage && 
-        <section className="agregar-post">
-          <AgregarPost
-            handleAddPost={this.handleAddPost}
-          />
-        </section>}
+        {this.props.myPage && (
+          <section className="agregar-post">
+            <AgregarPost handleAddPost={this.handleAddPost} />
+          </section>
+        )}
         <section className="ver-post">
-          <ListaPost
-            post={this.state.post}
-            myPage={this.props.myPage}
-          />
+          {this.state.post.length === 0 ? (<div className="noHayPost">No hay post</div>) :
+          (this.state.post.map((element) => {
+            return (
+              <React.Fragment key={element._id}>
+                <Post post={element} myPage={this.props.myPage}/>
+              </React.Fragment>
+            );
+          }))}
         </section>
       </div>
     );

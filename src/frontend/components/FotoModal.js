@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 
 import { connect } from "react-redux";
 import { setUser } from "../actions";
+import { fetchModUserAvatar } from "../utils/fetch";
 
 import userImg from "../utils/icons/user.png";
 
@@ -86,33 +87,15 @@ function FotoModal(props) {
     }
     let formdata = new FormData();
     formdata.append("avatar", avatar);
-    const response = await fetchUserAvatar(props.userId, formdata);
-    if (response.error) {
-      alert("Ocurrio un error");
-    } else {
+    const options = {
+      userId: props.userId,
+      info: formdata,
+      token: props.user.token
+    }
+    const response = await fetchModUserAvatar(options);
+    if (!response.error) {
       props.setUser({ user: { ...props.user, avatar: response.body.avatar } });
       closeModal();
-    }
-  };
-
-  const fetchUserAvatar = async (user, info) => {
-    try {
-      let response = await fetch(
-        `${API_URL}api/user/${user}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: props.user.token,
-          },
-          mode: "cors",
-          body: info,
-        }
-      );
-      response = response.json();
-      return response;
-    } catch (err) {
-      alert("Hubo un error");
-      console.error("[error]", err);
     }
   };
 
@@ -120,7 +103,7 @@ function FotoModal(props) {
     const width = img.current.width;
     const height = img.current.height;
     const conWidth = imgCon.current.clientWidth;
-    if(avatar === API_URL + userImg){
+    if(avatar === userImg){
       img.current.style.minWidth = "0"
       img.current.style.minHeight = "0"
     }else{
@@ -141,9 +124,9 @@ function FotoModal(props) {
 
   let avatar;
   if (locked) {
-    avatar = API_URL + userImg;
+    avatar = userImg;
   } else if (!file) {
-    avatar = API_URL + props.userAvatar;
+    avatar = props.userAvatar;
   } else {
     avatar = file.src;
   }

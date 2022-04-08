@@ -4,6 +4,8 @@ import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 import { setUser } from "../actions";
 
+import {fetchModUser} from '../utils/fetch'
+
 import config from "../config";
 const API_URL = config.api.url
 
@@ -53,12 +55,16 @@ function EditModal(props) {
       password: data.password,
       newPassword: data.password2,
     };
-    const response = await fetchUser(user);
+    const options = { 
+      token: props.user.token,
+      userId: usuario._id
+    }
+
+    const response = await fetchModUser(user, options);
     if (response.error) {
       if (response.body === "Informacion Invalida") {
         return setError({error: true, text: "Contraseña Incorrecta"});
       }
-      alert("sucedio un error");
     } else {
       props.setUser({ user: { ...props.user, username: user.username } });
       closeModal();
@@ -67,28 +73,6 @@ function EditModal(props) {
 
   const closeModal = () => {
     props.onClose();
-  };
-
-  const fetchUser = async (user) => {
-    try {
-      let response = await fetch(
-        `${API_URL}api/user/${usuario._id}`,
-        {
-          method: "PUT",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: props.user.token,
-          },
-          body: JSON.stringify(user),
-        }
-      );
-      response = response.json();
-      return response;
-    } catch (err) {
-      alert("Hubo un error");
-      console.error("[error]", err);
-    }
   };
 
   const erraseError = () => {

@@ -9,6 +9,7 @@ import logOutIcon from "../utils/icons/logout-icon.png";
 import homeIcon from "../utils/icons/home-icon.png";
 import user from "../utils/icons/user.png";
 import config from "../config"
+
 const API_URL = config.api.url
 
 import "./style/Header.css";
@@ -47,7 +48,7 @@ function Header(props) {
     }
   };
 
-  let avatarImg = props.user.avatar ? props.user.avatar : user
+  let avatarImg = props.user.avatar ? API_URL + props.user.avatar : user
 
   return (
     <div className="header">
@@ -73,7 +74,7 @@ function Header(props) {
               <figure className="header-perfil-figure" ref={imgCon}>
                 <img
                   ref={img}
-                  src={API_URL + avatarImg}
+                  src={avatarImg}
                   alt=""
                   className={`header-perfil-figure-img${
                     !props.user.avatar ? "_default" : ""

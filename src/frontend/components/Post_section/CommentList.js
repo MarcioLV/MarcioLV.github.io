@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import {connect} from "react-redux"
 
 import trash from "../../utils/icons/trash.png";
+import {fetchDeleteComment} from '../../utils/fetch'
 
 import "./style/CommentList.css";
 
@@ -31,34 +32,17 @@ function CommentList(prop) {
   };
 
   const handleDelComment = async (postId, commentId, index) => {
-    const error = await fetchDeleteComment(commentId, postId);
-    if(!error){
+    const options = {
+      commentId: commentId,
+      postId: postId,
+      token: prop.user.token
+    }
+    const response = await fetchDeleteComment(options);
+    if(!response.error){
       prop.handleDeleteComment(index)
     }
   };
-
-  const fetchDeleteComment= async (commentId, postId)=> {
-    let error = false
-    await fetch(`${API_URL}api/post/${postId}/comment`, {
-      method: "DELETE",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: prop.user.token,
-      },
-      body: JSON.stringify({id: commentId}),
-    })
-      .then((response) => {if(response.status === 500){
-        error = true 
-      }})
-      .catch((err) => {
-        console.error("[ERROR]", err)
-        error = true
-      });
-
-    return error;
-  }
-
+  
   return (
     <>
       <div className="post-comment_section-list">
@@ -84,7 +68,7 @@ function CommentList(prop) {
                       handleDelComment(comentario.post, comentario._id, index)
                     }
                   >
-                    <img src={API_URL + trash} alt="Delete icon" />
+                    <img src={trash} alt="Delete icon" />
                   </button> : 
                   <></>
               }

@@ -5,14 +5,14 @@ import { setUserPage } from "../actions";
 
 import "./style/Main.css";
 
-import {fetchPost} from '../utils/fetch'
+import { fetchPost } from "../utils/fetch";
 
 import PostSection from "../components/Post_section/PostSection";
 import Loading from "../components/Loading";
 import Error from "../components/Error";
 
 import config from "../config";
-const API_URL = config.api.url
+const API_URL = config.api.url;
 
 class Main extends React.Component {
   constructor(props) {
@@ -29,10 +29,10 @@ class Main extends React.Component {
     this.tryFetchPost();
   }
 
-  componentDidUpdate({reload}){
-    if(reload !== this.props.reload){
+  componentDidUpdate({ reload }) {
+    if (reload !== this.props.reload) {
       this.setState({ loading: true, error: false });
-      this.tryFetchPost()
+      this.tryFetchPost();
     }
   }
 
@@ -49,11 +49,11 @@ class Main extends React.Component {
         Authorization: this.props.user.token,
       },
     };
-    let response = await fetchPost(options)
-    if(!response.error){
-      this.setState({ post: response.body, loading: false, error: false })
-    }else{
-      this.setState({loading: false, error: true})
+    let response = await fetchPost(options);
+    if (!response.error) {
+      this.setState({ post: response.body, loading: false, error: false });
+    } else {
+      this.setState({ loading: false, error: true });
     }
   }
 

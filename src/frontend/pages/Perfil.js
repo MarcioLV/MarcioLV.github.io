@@ -147,7 +147,7 @@ class Perfil extends React.Component {
     }
 
     let userImg2 = this.props.userPage.avatar
-      ? this.props.userPage.avatar
+      ? API_URL + this.props.userPage.avatar
       : userImg;
     
     return (
@@ -155,7 +155,7 @@ class Perfil extends React.Component {
         <ViewImage
           onClose={() => this.closeViewImage()}
           isOpened={this.state.isOpenedView}
-          image={API_URL + userImg2}
+          image={userImg2}
         />
         <div className="perfil-view">
           <section className="perfil-user-contenedor">
@@ -163,7 +163,7 @@ class Perfil extends React.Component {
               <div className="perfil-user-imagen">
                 <div className="perfil-user-imagen-avatar" id="imgCon-perfil">
                   <img
-                    src={API_URL + userImg2}
+                    src={userImg2}
                     alt="user-imagen"
                     onClick={this.openViewImage}
                     onLoad={
@@ -181,7 +181,7 @@ class Perfil extends React.Component {
                       className="perfil-user-imagen-change_contenedor"
                       onClick={this.openModalImg}
                     >
-                      <img src={API_URL + changeImg} alt="" />
+                      <img src={changeImg} alt="" />
                     </div>
                     <FotoModal
                       onClose={() => this.closeModal()}
